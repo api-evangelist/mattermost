@@ -1,0 +1,64 @@
+aid: mattermost
+name: Mattermost
+description: >-
+  Mattermost is an open-source collaboration platform for technical teams
+  that combines secure team messaging, workflow automation, voice/video
+  calling, and integrations as a self-hosted Slack alternative. The
+  Mattermost REST API exposes full programmatic control over users,
+  teams, channels, posts, files, integrations, plugins, and webhooks.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Messaging
+  - Collaboration
+  - Team Chat
+  - Open Source
+  - DevOps
+  - Self-Hosted
+url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/apis.yml
+created: '2026-05-11'
+modified: '2026-05-11'
+specificationVersion: '0.19'
+apis:
+  - aid: mattermost:rest-api
+    name: Mattermost REST API
+    description: >-
+      REST API v4 for managing users, teams, channels, posts, threads,
+      files, integrations, plugins, webhooks, slash commands, and
+      OAuth applications. Authentication uses Personal Access Tokens
+      or session tokens via Bearer authentication.
+    humanURL: https://api.mattermost.com/
+    baseURL: https://your-mattermost-server.com/api/v4
+    tags:
+      - Messaging
+      - Users
+      - Teams
+      - Channels
+      - Posts
+      - Webhooks
+      - Integrations
+    properties:
+      - type: Documentation
+        url: https://api.mattermost.com/
+      - type: API Reference
+        url: https://developers.mattermost.com/integrate/reference/rest-api/
+      - type: OpenAPI Source
+        url: https://github.com/mattermost/mattermost-api-reference
+      - type: Developer Guide
+        url: https://developers.mattermost.com/contribute/more-info/server/rest-api/
+common:
+  - type: Website
+    url: https://mattermost.com
+  - type: Documentation
+    url: https://docs.mattermost.com
+  - type: Developer Portal
+    url: https://developers.mattermost.com/
+  - type: GitHub Organization
+    url: https://github.com/mattermost
+  - type: Sign Up
+    url: https://mattermost.com/sign-up/
+  - type: Pricing
+    url: https://mattermost.com/pricing/
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
