@@ -17,7 +17,7 @@ tags:
   - Self-Hosted
 url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/apis.yml
 created: '2026-05-11'
-modified: '2026-05-11'
+modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
   - aid: mattermost:rest-api
@@ -59,6 +59,9 @@ common:
     url: https://mattermost.com/sign-up/
   - type: Pricing
     url: https://mattermost.com/pricing/
+  - name: MCP Server
+    url: https://github.com/mattermost/mmctl-mcp
+    type: MCPServer
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
