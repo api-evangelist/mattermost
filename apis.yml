@@ -47,6 +47,8 @@ apis:
       - type: Developer Guide
         url: https://developers.mattermost.com/contribute/more-info/server/rest-api/
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/mattermost
   - type: Website
     url: https://mattermost.com
   - type: Documentation
