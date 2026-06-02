@@ -1,0 +1,833 @@
+asyncapi: '2.6.0'
+info:
+  title: Mattermost WebSocket API
+  version: '4'
+  description: |
+    Mattermost's WebSocket API delivers real-time events from a Mattermost
+    server to authenticated clients and accepts a small set of WebSocket
+    actions for client-to-server interaction.
+
+    A client opens a standard WebSocket connection to `/api/v4/websocket`
+    and authenticates either by passing the standard API authentication
+    (cookie or Authorization header during the HTTP upgrade) or by sending
+    an `authentication_challenge` action over the open socket with a
+    Personal Access Token or session token.
+
+    Once authenticated, the server emits a `hello` event and then streams
+    `event` messages. Each event message uses the envelope
+    `{ event, data, broadcast, seq }`. Client requests use the envelope
+    `{ action, seq, data }` and receive `{ status, seq_reply, data?, error? }`
+    responses.
+
+    The list of events and actions in this document is taken from the
+    Mattermost API documentation (introduction reference) and is not
+    extended beyond what Mattermost documents. Payload shapes for event
+    `data` fields reference the same model objects used by the Mattermost
+    REST API (Post, User, Channel, Reaction, Status, Preference, Team,
+    Emoji). Where the documentation only lists an event name without
+    enumerating its `data` keys, this spec leaves `data` as a free-form
+    object so it is not fabricated.
+  contact:
+    name: Mattermost API Documentation
+    url: https://developers.mattermost.com/api-documentation
+  license:
+    name: Mattermost Source Available License
+    url: https://docs.mattermost.com/about/mattermost-source-available-license.html
+
+servers:
+  production:
+    url: '{your-mattermost-server}/api/v4/websocket'
+    protocol: wss
+    description: Self-hosted Mattermost server WebSocket endpoint.
+    variables:
+      your-mattermost-server:
+        default: your-mattermost-server.com
+        description: Hostname of your Mattermost server.
+    security:
+      - bearerAuth: []
+      - cookieAuth: []
+      - challenge: []
+
+defaultContentType: application/json
+
+channels:
+  /api/v4/websocket:
+    description: |
+      The single Mattermost WebSocket channel. The server publishes
+      event envelopes to the client over this channel, and the client
+      publishes action envelopes (including the initial
+      `authentication_challenge`) back to the server.
+    bindings:
+      ws:
+        bindingVersion: '0.1.0'
+    subscribe:
+      operationId: receiveServerMessage
+      summary: Receive an event envelope or response from the server.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/EventEnvelope'
+          - $ref: '#/components/messages/ResponseEnvelope'
+    publish:
+      operationId: sendClientAction
+      summary: Send an action envelope to the server.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/AuthenticationChallengeAction'
+          - $ref: '#/components/messages/UserTypingAction'
+          - $ref: '#/components/messages/GetStatusesAction'
+          - $ref: '#/components/messages/GetStatusesByIdsAction'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: httpApiKey
+      in: header
+      name: Authorization
+      description: |
+        Standard Mattermost bearer authentication during the WebSocket
+        upgrade. Send `Authorization: Bearer <token>` where token is a
+        session token or Personal Access Token.
+    cookieAuth:
+      type: httpApiKey
+      in: header
+      name: Cookie
+      description: |
+        Browser cookie authentication using the `MMAUTHTOKEN` cookie set
+        by the Mattermost web app or `/users/login`.
+    challenge:
+      type: userPassword
+      description: |
+        Authenticate by sending an `authentication_challenge` action over
+        the open WebSocket. The `data.token` field carries a session token
+        or Personal Access Token. A successful challenge yields a
+        `{ "status": "OK", "seq_reply": 1 }` response and then a `hello`
+        event.
+
+  messages:
+    EventEnvelope:
+      name: EventEnvelope
+      title: Server-to-Client Event Envelope
+      summary: Real-time event broadcast from the Mattermost server.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/EventEnvelope'
+
+    ResponseEnvelope:
+      name: ResponseEnvelope
+      title: Server-to-Client Response Envelope
+      summary: Reply to a client action, correlated via `seq_reply`.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ResponseEnvelope'
+
+    AuthenticationChallengeAction:
+      name: AuthenticationChallengeAction
+      title: Authentication Challenge
+      summary: Authenticate the open WebSocket with a token.
+      contentType: application/json
+      payload:
+        type: object
+        required: [action, seq, data]
+        properties:
+          action:
+            type: string
+            const: authentication_challenge
+          seq:
+            type: integer
+            minimum: 1
+            description: Client-incremented sequence number.
+          data:
+            type: object
+            required: [token]
+            properties:
+              token:
+                type: string
+                description: Session token or Personal Access Token.
+
+    UserTypingAction:
+      name: UserTypingAction
+      title: User Typing
+      summary: Notify the server that the user is typing.
+      contentType: application/json
+      payload:
+        type: object
+        required: [action, seq, data]
+        properties:
+          action:
+            type: string
+            const: user_typing
+          seq:
+            type: integer
+            minimum: 1
+          data:
+            type: object
+            required: [channel_id]
+            properties:
+              channel_id:
+                type: string
+                description: Channel the user is typing in.
+              parent_id:
+                type: string
+                description: |
+                  Optional root post ID when typing in a thread reply.
+
+    GetStatusesAction:
+      name: GetStatusesAction
+      title: Get Statuses
+      summary: Request user statuses for users known to the connection.
+      contentType: application/json
+      payload:
+        type: object
+        required: [action, seq]
+        properties:
+          action:
+            type: string
+            const: get_statuses
+          seq:
+            type: integer
+            minimum: 1
+          data:
+            type: object
+            description: No documented data fields.
+
+    GetStatusesByIdsAction:
+      name: GetStatusesByIdsAction
+      title: Get Statuses By IDs
+      summary: Request user statuses for a specific list of user IDs.
+      contentType: application/json
+      payload:
+        type: object
+        required: [action, seq, data]
+        properties:
+          action:
+            type: string
+            const: get_statuses_by_ids
+          seq:
+            type: integer
+            minimum: 1
+          data:
+            type: object
+            required: [user_ids]
+            properties:
+              user_ids:
+                type: array
+                items:
+                  type: string
+
+  schemas:
+    Broadcast:
+      type: object
+      description: |
+        Routing metadata describing which connections the event was
+        broadcast to. Fields mirror the Mattermost server
+        `WebsocketBroadcast` struct.
+      properties:
+        omit_users:
+          type: object
+          nullable: true
+          additionalProperties:
+            type: boolean
+          description: Map of user IDs explicitly excluded from this broadcast.
+        user_id:
+          type: string
+          description: Single user the broadcast targets, when set.
+        channel_id:
+          type: string
+          description: Channel scope for the broadcast, when set.
+        team_id:
+          type: string
+          description: Team scope for the broadcast, when set.
+        connection_id:
+          type: string
+          description: Single WebSocket connection the broadcast targets, when set.
+        omit_connection_id:
+          type: string
+          description: WebSocket connection excluded from this broadcast, when set.
+        contains_sanitized_data:
+          type: boolean
+          description: Broadcast only delivered to non-sysadmins.
+        contains_sensitive_data:
+          type: boolean
+          description: Broadcast only delivered to sysadmins.
+
+    EventEnvelope:
+      type: object
+      description: |
+        Server-to-client event envelope. The `event` field is the event
+        type and `data` carries fields relevant to that type. Per the
+        Mattermost docs, the very first envelope after a successful
+        challenge is a `hello` event.
+      required: [event, data, broadcast, seq]
+      properties:
+        event:
+          $ref: '#/components/schemas/EventType'
+        data:
+          description: |
+            Event-specific payload. See the per-event payload schemas in
+            `EventDataByType` for documented shapes; events not enumerated
+            there carry a payload whose specific keys are not documented.
+          oneOf:
+            - $ref: '#/components/schemas/HelloData'
+            - $ref: '#/components/schemas/PostedData'
+            - $ref: '#/components/schemas/PostEditedData'
+            - $ref: '#/components/schemas/PostDeletedData'
+            - $ref: '#/components/schemas/PostUnreadData'
+            - $ref: '#/components/schemas/TypingData'
+            - $ref: '#/components/schemas/StatusChangeData'
+            - $ref: '#/components/schemas/ChannelCreatedData'
+            - $ref: '#/components/schemas/ChannelUpdatedData'
+            - $ref: '#/components/schemas/ChannelDeletedData'
+            - $ref: '#/components/schemas/ChannelConvertedData'
+            - $ref: '#/components/schemas/ChannelViewedData'
+            - $ref: '#/components/schemas/ChannelMemberUpdatedData'
+            - $ref: '#/components/schemas/DirectAddedData'
+            - $ref: '#/components/schemas/GroupAddedData'
+            - $ref: '#/components/schemas/UserAddedData'
+            - $ref: '#/components/schemas/UserRemovedData'
+            - $ref: '#/components/schemas/UserUpdatedData'
+            - $ref: '#/components/schemas/UserRoleUpdatedData'
+            - $ref: '#/components/schemas/MemberRoleUpdatedData'
+            - $ref: '#/components/schemas/RoleUpdatedData'
+            - $ref: '#/components/schemas/NewUserData'
+            - $ref: '#/components/schemas/AddedToTeamData'
+            - $ref: '#/components/schemas/LeaveTeamData'
+            - $ref: '#/components/schemas/UpdateTeamData'
+            - $ref: '#/components/schemas/DeleteTeamData'
+            - $ref: '#/components/schemas/PreferenceChangedData'
+            - $ref: '#/components/schemas/PreferencesChangedData'
+            - $ref: '#/components/schemas/PreferencesDeletedData'
+            - $ref: '#/components/schemas/EphemeralMessageData'
+            - $ref: '#/components/schemas/ReactionAddedData'
+            - $ref: '#/components/schemas/ReactionRemovedData'
+            - $ref: '#/components/schemas/EmojiAddedData'
+            - $ref: '#/components/schemas/PluginEnabledData'
+            - $ref: '#/components/schemas/PluginDisabledData'
+            - $ref: '#/components/schemas/PluginStatusesChangedData'
+            - $ref: '#/components/schemas/LicenseChangedData'
+            - $ref: '#/components/schemas/ConfigChangedData'
+            - $ref: '#/components/schemas/DialogOpenedData'
+            - $ref: '#/components/schemas/ThreadUpdatedData'
+            - $ref: '#/components/schemas/ThreadFollowChangedData'
+            - $ref: '#/components/schemas/ThreadReadChangedData'
+            - $ref: '#/components/schemas/ResponseData'
+            - $ref: '#/components/schemas/OpaqueData'
+        broadcast:
+          $ref: '#/components/schemas/Broadcast'
+        seq:
+          type: integer
+          format: int64
+          description: Per-connection event sequence assigned by the server.
+
+    ResponseEnvelope:
+      type: object
+      description: |
+        Server reply to a client action. The `seq_reply` field equals the
+        `seq` of the originating action.
+      required: [status, seq_reply]
+      properties:
+        status:
+          type: string
+          enum: [OK, FAIL]
+          description: |
+            Outcome of the action. `OK` indicates success; `FAIL`
+            indicates an error has been included.
+        seq_reply:
+          type: integer
+          format: int64
+          description: Sequence number from the originating client action.
+        data:
+          type: object
+          description: |
+            Action-specific response payload, when the action returns
+            data.
+        error:
+          $ref: '#/components/schemas/AppError'
+
+    AppError:
+      type: object
+      description: Standard Mattermost API error object.
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: integer
+        request_id:
+          type: string
+        detailed_error:
+          type: string
+
+    EventType:
+      type: string
+      description: |
+        Mattermost WebSocket event type. The enumerated values are
+        sourced directly from the Mattermost API documentation
+        (introduction reference) WebSocket events list.
+      enum:
+        - added_to_team
+        - authentication_challenge
+        - channel_converted
+        - channel_created
+        - channel_deleted
+        - channel_member_updated
+        - channel_updated
+        - channel_viewed
+        - config_changed
+        - delete_team
+        - direct_added
+        - emoji_added
+        - ephemeral_message
+        - group_added
+        - hello
+        - leave_team
+        - license_changed
+        - memberrole_updated
+        - new_user
+        - plugin_disabled
+        - plugin_enabled
+        - plugin_statuses_changed
+        - post_deleted
+        - post_edited
+        - post_unread
+        - posted
+        - preference_changed
+        - preferences_changed
+        - preferences_deleted
+        - reaction_added
+        - reaction_removed
+        - response
+        - role_updated
+        - status_change
+        - typing
+        - update_team
+        - user_added
+        - user_removed
+        - user_role_updated
+        - user_updated
+        - dialog_opened
+        - thread_updated
+        - thread_follow_changed
+        - thread_read_changed
+
+    OpaqueData:
+      type: object
+      description: |
+        Free-form payload used when the documentation lists an event but
+        does not enumerate the fields of its `data` map.
+      additionalProperties: true
+
+    # ---- Per-event payload schemas ------------------------------------
+    # Fields below are limited to what the Mattermost API documentation
+    # and shared model objects (Post, User, Channel, Reaction, Status,
+    # Preference, Team, Emoji) describe.
+
+    HelloData:
+      type: object
+      description: Sent immediately after successful authentication.
+      properties:
+        server_version:
+          type: string
+          description: Build version string of the Mattermost server.
+
+    PostedData:
+      type: object
+      description: New post was created.
+      properties:
+        post:
+          type: string
+          description: JSON-serialized Post object.
+        channel_display_name:
+          type: string
+        channel_name:
+          type: string
+        channel_type:
+          type: string
+        sender_name:
+          type: string
+        team_id:
+          type: string
+        set_online:
+          type: boolean
+        mentions:
+          type: string
+          description: JSON-serialized array of mentioned user IDs.
+
+    PostEditedData:
+      type: object
+      description: Existing post was edited.
+      properties:
+        post:
+          type: string
+          description: JSON-serialized updated Post object.
+
+    PostDeletedData:
+      type: object
+      description: Existing post was deleted.
+      properties:
+        post:
+          type: string
+          description: JSON-serialized deleted Post object.
+
+    PostUnreadData:
+      type: object
+      description: A post was marked unread.
+      properties:
+        channel_id:
+          type: string
+        team_id:
+          type: string
+        last_viewed_at:
+          type: integer
+          format: int64
+        msg_count:
+          type: integer
+        mention_count:
+          type: integer
+
+    TypingData:
+      type: object
+      description: A user has begun typing in a channel.
+      properties:
+        user_id:
+          type: string
+        parent_id:
+          type: string
+          description: Root post ID when typing in a thread.
+
+    StatusChangeData:
+      type: object
+      description: A user's status changed.
+      properties:
+        status:
+          type: string
+          enum: [online, away, dnd, offline]
+        user_id:
+          type: string
+
+    ChannelCreatedData:
+      type: object
+      description: A new channel was created.
+      properties:
+        channel_id:
+          type: string
+        team_id:
+          type: string
+
+    ChannelUpdatedData:
+      type: object
+      description: A channel was updated.
+      properties:
+        channel:
+          type: string
+          description: JSON-serialized Channel object.
+
+    ChannelDeletedData:
+      type: object
+      description: A channel was deleted.
+      properties:
+        channel_id:
+          type: string
+        team_id:
+          type: string
+        delete_at:
+          type: integer
+          format: int64
+
+    ChannelConvertedData:
+      type: object
+      description: A channel was converted (for example, public to private).
+      properties:
+        channel_id:
+          type: string
+
+    ChannelViewedData:
+      type: object
+      description: A channel was viewed by the user.
+      properties:
+        channel_id:
+          type: string
+
+    ChannelMemberUpdatedData:
+      type: object
+      description: A channel member record was updated.
+      properties:
+        channelMember:
+          type: string
+          description: JSON-serialized ChannelMember object.
+
+    DirectAddedData:
+      type: object
+      description: A direct message channel was added for the user.
+      properties:
+        teammate_id:
+          type: string
+
+    GroupAddedData:
+      type: object
+      description: A group message channel was added for the user.
+      properties:
+        teammate_ids:
+          type: string
+          description: JSON-serialized array of teammate user IDs.
+
+    UserAddedData:
+      type: object
+      description: A user was added to a channel.
+      properties:
+        user_id:
+          type: string
+        team_id:
+          type: string
+
+    UserRemovedData:
+      type: object
+      description: A user was removed from a channel.
+      properties:
+        user_id:
+          type: string
+        remover_id:
+          type: string
+
+    UserUpdatedData:
+      type: object
+      description: A user profile was updated.
+      properties:
+        user:
+          $ref: '#/components/schemas/UserRef'
+
+    UserRoleUpdatedData:
+      type: object
+      description: A user's system roles were updated.
+      properties:
+        user_id:
+          type: string
+        roles:
+          type: string
+
+    MemberRoleUpdatedData:
+      type: object
+      description: A team or channel member's roles were updated.
+      properties:
+        member:
+          type: string
+          description: JSON-serialized member object.
+
+    RoleUpdatedData:
+      type: object
+      description: A role definition was updated.
+      properties:
+        role:
+          type: string
+          description: JSON-serialized Role object.
+
+    NewUserData:
+      type: object
+      description: A new user joined the server.
+      properties:
+        user_id:
+          type: string
+
+    AddedToTeamData:
+      type: object
+      description: A user was added to a team.
+      properties:
+        team_id:
+          type: string
+        user_id:
+          type: string
+
+    LeaveTeamData:
+      type: object
+      description: A user left a team.
+      properties:
+        team_id:
+          type: string
+        user_id:
+          type: string
+
+    UpdateTeamData:
+      type: object
+      description: A team was updated.
+      properties:
+        team:
+          type: string
+          description: JSON-serialized Team object.
+
+    DeleteTeamData:
+      type: object
+      description: A team was deleted.
+      properties:
+        team:
+          type: string
+          description: JSON-serialized Team object.
+
+    PreferenceChangedData:
+      type: object
+      description: A single user preference changed.
+      properties:
+        preference:
+          type: string
+          description: JSON-serialized Preference object.
+
+    PreferencesChangedData:
+      type: object
+      description: A batch of user preferences changed.
+      properties:
+        preferences:
+          type: string
+          description: JSON-serialized array of Preference objects.
+
+    PreferencesDeletedData:
+      type: object
+      description: A batch of user preferences was deleted.
+      properties:
+        preferences:
+          type: string
+          description: JSON-serialized array of Preference objects.
+
+    EphemeralMessageData:
+      type: object
+      description: A server-only message delivered to a single user.
+      properties:
+        post:
+          type: string
+          description: JSON-serialized Post object.
+
+    ReactionAddedData:
+      type: object
+      description: A reaction was added to a post.
+      properties:
+        reaction:
+          type: string
+          description: JSON-serialized Reaction object.
+
+    ReactionRemovedData:
+      type: object
+      description: A reaction was removed from a post.
+      properties:
+        reaction:
+          type: string
+          description: JSON-serialized Reaction object.
+
+    EmojiAddedData:
+      type: object
+      description: A custom emoji was added.
+      properties:
+        emoji:
+          type: string
+          description: JSON-serialized Emoji object.
+
+    PluginEnabledData:
+      type: object
+      description: A plugin was enabled.
+      properties:
+        manifest:
+          type: string
+          description: JSON-serialized plugin manifest.
+
+    PluginDisabledData:
+      type: object
+      description: A plugin was disabled.
+      properties:
+        manifest:
+          type: string
+          description: JSON-serialized plugin manifest.
+
+    PluginStatusesChangedData:
+      type: object
+      description: Plugin runtime statuses changed.
+      properties:
+        plugin_statuses:
+          type: string
+          description: JSON-serialized array of plugin status objects.
+
+    LicenseChangedData:
+      type: object
+      description: The server license changed.
+      properties:
+        license:
+          type: object
+          additionalProperties: true
+
+    ConfigChangedData:
+      type: object
+      description: Server configuration changed.
+      properties:
+        config:
+          type: object
+          additionalProperties: true
+
+    DialogOpenedData:
+      type: object
+      description: An interactive dialog was opened for the user.
+      properties:
+        dialog:
+          type: string
+          description: JSON-serialized dialog request.
+
+    ThreadUpdatedData:
+      type: object
+      description: A thread was updated.
+      properties:
+        thread:
+          type: string
+          description: JSON-serialized thread object.
+
+    ThreadFollowChangedData:
+      type: object
+      description: The follow state of a thread changed.
+      properties:
+        thread_id:
+          type: string
+        state:
+          type: boolean
+
+    ThreadReadChangedData:
+      type: object
+      description: The read state of a thread changed.
+      properties:
+        thread_id:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        unread_mentions:
+          type: integer
+        unread_replies:
+          type: integer
+
+    ResponseData:
+      type: object
+      description: |
+        Payload used by the `response` event type, which the server uses
+        internally to wrap action responses delivered as events.
+      additionalProperties: true
+
+    # ---- Lightweight reference shapes ---------------------------------
+
+    UserRef:
+      type: object
+      description: |
+        Minimal Mattermost user shape used inside event payloads. Mirrors
+        the documented fields of the User model used by the REST API.
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        nickname:
+          type: string
+        roles:
+          type: string
+        locale:
+          type: string
+        update_at:
+          type: integer
+          format: int64

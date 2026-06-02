@@ -17,7 +17,7 @@ tags:
   - Self-Hosted
 url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/apis.yml
 created: '2026-05-11'
-modified: '2026-05-19'
+modified: '2026-05-29'
 specificationVersion: '0.19'
 apis:
   - aid: mattermost:rest-api
@@ -46,6 +46,31 @@ apis:
         url: https://github.com/mattermost/mattermost-api-reference
       - type: Developer Guide
         url: https://developers.mattermost.com/contribute/more-info/server/rest-api/
+  - aid: mattermost:websocket-api
+    name: Mattermost WebSocket API
+    description: >-
+      Real-time WebSocket event stream for Mattermost v4. Clients connect
+      to /api/v4/websocket, authenticate via cookie, Authorization header,
+      or an authentication_challenge action, and receive event envelopes
+      (event, data, broadcast, seq) covering posts, channels, users,
+      teams, reactions, typing, status, threads, plugins, and more. Client
+      actions user_typing, get_statuses, and get_statuses_by_ids are
+      supported over the same socket.
+    humanURL: https://developers.mattermost.com/api-documentation
+    baseURL: wss://your-mattermost-server.com/api/v4/websocket
+    tags:
+      - WebSocket
+      - Events
+      - Real-Time
+      - Messaging
+      - AsyncAPI
+    properties:
+      - type: Documentation
+        url: https://developers.mattermost.com/api-documentation
+      - type: AsyncAPI
+        url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/asyncapi/mattermost-asyncapi.yml
+      - type: APIReference
+        url: https://developers.mattermost.com/integrate/reference/rest-api/
 common:
   - type: LinkedIn
     url: https://www.linkedin.com/company/mattermost
