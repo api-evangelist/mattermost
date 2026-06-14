@@ -1,0 +1,1301 @@
+"""
+Mattermost GraphQL Schema
+Conceptual schema derived from the Mattermost REST API v4.
+Source: https://api.mattermost.com/
+"""
+
+scalar DateTime
+scalar JSON
+scalar Upload
+
+# ─── Users & Sessions ───────────────────────────────────────────────────────
+
+type User {
+  id: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  username: String!
+  email: String!
+  emailVerified: Boolean!
+  nickname: String
+  firstName: String
+  lastName: String
+  position: String
+  roles: String!
+  locale: String
+  props: JSON
+  notifyProps: NotifyProps
+  lastPictureUpdate: DateTime
+  failedAttempts: Int
+  mfaActive: Boolean!
+  timezone: Timezone
+  remoteId: String
+  isBot: Boolean!
+  botDescription: String
+  botLastIconUpdate: DateTime
+}
+
+type UserProfile {
+  id: ID!
+  username: String!
+  email: String!
+  nickname: String
+  firstName: String
+  lastName: String
+  position: String
+  roles: String!
+  locale: String
+  timezone: Timezone
+  isBot: Boolean!
+  lastPictureUpdate: DateTime
+}
+
+type UserSession {
+  id: ID!
+  token: String!
+  createAt: DateTime!
+  lastActivityAt: DateTime!
+  userId: ID!
+  deviceId: String
+  roles: String!
+  isOauth: Boolean!
+  props: JSON
+  teamMembers: [TeamMember!]
+  expireAt: DateTime
+}
+
+type Status {
+  userId: ID!
+  status: String!
+  manual: Boolean!
+  lastActivityAt: DateTime!
+  activeChannel: String
+  dndEndTime: DateTime
+}
+
+type NotifyProps {
+  email: String
+  push: String
+  desktop: String
+  desktopSound: String
+  mentionKeys: String
+  channel: String
+  firstName: String
+  pushStatus: String
+  comments: String
+  autoResponderActive: String
+  autoResponderMessage: String
+}
+
+type Timezone {
+  useAutomaticTimezone: Boolean!
+  automaticTimezone: String
+  manualTimezone: String
+}
+
+type Preferences {
+  userId: ID!
+  items: [Preference!]!
+}
+
+type Preference {
+  userId: ID!
+  category: String!
+  name: String!
+  value: String!
+}
+
+# ─── Teams ───────────────────────────────────────────────────────────────────
+
+type Team {
+  id: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  displayName: String!
+  name: String!
+  description: String
+  email: String
+  type: TeamType!
+  companyName: String
+  allowedDomains: String
+  inviteId: String!
+  allowOpenInvite: Boolean!
+  groupConstrained: Boolean
+  schemeId: ID
+  policyId: ID
+  cloudLimitsArchived: Boolean
+}
+
+enum TeamType {
+  OPEN
+  INVITE
+}
+
+type TeamMember {
+  teamId: ID!
+  userId: ID!
+  roles: String!
+  deleteAt: DateTime
+  schemeGuest: Boolean!
+  schemeUser: Boolean!
+  schemeAdmin: Boolean!
+  explicitRoles: String
+  user: User
+  team: Team
+}
+
+type TeamStats {
+  teamId: ID!
+  totalMemberCount: Int!
+  activeMemberCount: Int!
+}
+
+# ─── Channels ────────────────────────────────────────────────────────────────
+
+type Channel {
+  id: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  teamId: ID
+  type: ChannelType!
+  displayName: String!
+  name: String!
+  header: String
+  purpose: String
+  lastPostAt: DateTime
+  totalMsgCount: Int!
+  extraUpdateAt: DateTime
+  creatorId: ID
+  schemeId: ID
+  props: JSON
+  groupConstrained: Boolean
+  shared: Boolean
+  totalMsgCountRoot: Int
+  policyId: ID
+  lastRootPostAt: DateTime
+  team: Team
+  members: [ChannelMember!]
+}
+
+enum ChannelType {
+  OPEN
+  PRIVATE
+  DIRECT
+  GROUP
+}
+
+type ChannelMember {
+  channelId: ID!
+  userId: ID!
+  roles: String!
+  lastViewedAt: DateTime!
+  msgCount: Int!
+  mentionCount: Int!
+  mentionCountRoot: Int
+  msgCountRoot: Int
+  notifyProps: ChannelNotifyProps!
+  lastUpdateAt: DateTime!
+  schemeGuest: Boolean!
+  schemeUser: Boolean!
+  schemeAdmin: Boolean!
+  explicitRoles: String
+  cursor: String
+  user: User
+  channel: Channel
+}
+
+type ChannelMemberHistory {
+  channelId: ID!
+  userId: ID!
+  joinTime: DateTime!
+  leaveTime: DateTime
+  user: User
+}
+
+type ChannelNotifyProps {
+  email: String
+  push: String
+  desktop: String
+  markUnread: String
+  ignoreChannelMentions: String
+  channelAutoFollowThreads: String
+}
+
+type DirectChannel {
+  channel: Channel!
+  user1: User!
+  user2: User!
+}
+
+type GroupChannel {
+  channel: Channel!
+  members: [User!]!
+}
+
+type ChannelStats {
+  channelId: ID!
+  memberCount: Int!
+  guestCount: Int
+  pinnedPostCount: Int
+  filesCount: Int
+}
+
+# ─── Posts & Threads ─────────────────────────────────────────────────────────
+
+type Post {
+  id: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  editAt: DateTime
+  userId: ID!
+  channelId: ID!
+  rootId: ID
+  originalId: ID
+  message: String!
+  type: String
+  props: JSON
+  hashtags: String
+  pendingPostId: String
+  replyCount: Int!
+  lastReplyAt: DateTime
+  participants: [User!]
+  isFollowing: Boolean
+  metadata: PostMetadata
+  user: User
+  channel: Channel
+  reactions: [Reaction!]
+  fileAttachments: [FileAttachment!]
+}
+
+type PostMetadata {
+  postId: ID!
+  embeds: [PostEmbed!]
+  emojis: [Emoji!]
+  files: [FileAttachment!]
+  images: JSON
+  reactions: [Reaction!]
+  priority: PostPriority
+  acknowledgements: [PostAcknowledgement!]
+}
+
+type PostEmbed {
+  type: String!
+  url: String
+  data: JSON
+}
+
+type PostPriority {
+  priority: String
+  requestedAck: Boolean
+  persistentNotifications: Boolean
+}
+
+type PostAcknowledgement {
+  userId: ID!
+  postId: ID!
+  acknowledgedAt: DateTime!
+  user: User
+}
+
+type Thread {
+  id: ID!
+  replyCount: Int!
+  lastReplyAt: DateTime!
+  lastViewedAt: DateTime
+  participants: [User!]!
+  post: Post!
+  unreadReplies: Int
+  unreadMentions: Int
+  isFollowing: Boolean!
+  threadMembers: [ThreadMember!]
+}
+
+type ThreadMember {
+  postId: ID!
+  userId: ID!
+  lastViewed: DateTime
+  lastUpdatedAt: DateTime!
+  unreadMentions: Int!
+  unreadReplies: Int!
+  following: Boolean!
+  user: User
+}
+
+type Reaction {
+  userId: ID!
+  postId: ID!
+  emojiName: String!
+  createAt: DateTime!
+  user: User
+}
+
+# ─── Files ───────────────────────────────────────────────────────────────────
+
+type FileAttachment {
+  id: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  userId: ID!
+  channelId: ID!
+  postId: ID
+  name: String!
+  extension: String!
+  size: Int!
+  mimeType: String!
+  width: Int
+  height: Int
+  hasPreviewImage: Boolean!
+  miniPreview: String
+  remotePath: String
+  user: User
+}
+
+# ─── Roles & Permissions ─────────────────────────────────────────────────────
+
+type Role {
+  id: ID!
+  name: String!
+  displayName: String!
+  description: String
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  permissions: [String!]!
+  schemeManaged: Boolean!
+  builtIn: Boolean!
+}
+
+type Permission {
+  id: ID!
+  name: String!
+  description: String
+  isSystemOnly: Boolean
+}
+
+type Scheme {
+  id: ID!
+  name: String!
+  displayName: String!
+  description: String
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  scope: SchemeScope!
+  defaultTeamAdminRole: String!
+  defaultTeamUserRole: String!
+  defaultChannelAdminRole: String!
+  defaultChannelUserRole: String!
+  defaultTeamGuestRole: String
+  defaultChannelGuestRole: String
+}
+
+enum SchemeScope {
+  TEAM
+  CHANNEL
+}
+
+# ─── Emoji ───────────────────────────────────────────────────────────────────
+
+type Emoji {
+  id: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  creatorId: ID!
+  name: String!
+  creator: User
+}
+
+# ─── Webhooks & Integrations ─────────────────────────────────────────────────
+
+type IncomingWebhook {
+  id: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  userId: ID!
+  channelId: ID!
+  teamId: ID!
+  displayName: String
+  description: String
+  username: String
+  iconURL: String
+  channelLocked: Boolean!
+  channel: Channel
+  team: Team
+  user: User
+}
+
+type OutgoingWebhook {
+  id: ID!
+  token: String!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  creatorId: ID!
+  channelId: ID
+  teamId: ID!
+  triggerWords: [String!]!
+  triggerWhen: Int!
+  callbackUrls: [String!]!
+  displayName: String
+  description: String
+  contentType: String
+  username: String
+  iconURL: String
+  channel: Channel
+  team: Team
+  creator: User
+}
+
+type Command {
+  id: ID!
+  token: String!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  creatorId: ID!
+  teamId: ID!
+  trigger: String!
+  method: String!
+  username: String
+  iconURL: String
+  autoComplete: Boolean!
+  autoCompleteDesc: String
+  autoCompleteHint: String
+  displayName: String!
+  description: String
+  url: String!
+  creator: User
+  team: Team
+}
+
+type CommandResponse {
+  responseType: String
+  text: String
+  username: String
+  iconURL: String
+  goto_location: String
+  type: String
+  extraResponses: [CommandResponse!]
+  props: JSON
+  attachments: JSON
+}
+
+type OAuth2App {
+  id: ID!
+  clientSecret: String
+  name: String!
+  description: String
+  iconURL: String
+  callbackUrls: [String!]!
+  homepage: String!
+  isTrusted: Boolean!
+  createAt: DateTime!
+  updateAt: DateTime!
+  creatorId: ID!
+  creator: User
+}
+
+# ─── Plugins ─────────────────────────────────────────────────────────────────
+
+type Plugin {
+  id: ID!
+  name: String!
+  description: String
+  version: String!
+  minServerVersion: String
+  backend: PluginComponent
+  webapp: PluginComponent
+  settingsSchema: JSON
+  active: Boolean!
+  manifest: PluginManifest
+}
+
+type PluginManifest {
+  id: ID!
+  name: String!
+  description: String
+  version: String!
+  minServerVersion: String
+  server: PluginComponent
+  webapp: PluginComponent
+  settingsSchema: JSON
+  props: JSON
+}
+
+type PluginComponent {
+  executable: String
+  backendVersion: String
+}
+
+type PluginSettings {
+  pluginId: ID!
+  settings: JSON!
+}
+
+# ─── Groups ──────────────────────────────────────────────────────────────────
+
+type Group {
+  id: ID!
+  name: String!
+  displayName: String!
+  description: String
+  source: String!
+  remoteId: String
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  hasSyncables: Boolean
+  memberCount: Int
+  allowReference: Boolean!
+  members: [GroupMember!]
+  teams: [GroupTeam!]
+  channels: [GroupChannel!]
+}
+
+type GroupMember {
+  groupId: ID!
+  userId: ID!
+  createAt: DateTime!
+  deleteAt: DateTime
+  user: User
+  group: Group
+}
+
+type GroupTeam {
+  groupId: ID!
+  teamId: ID!
+  autoAdd: Boolean!
+  schemeAdmin: Boolean!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  team: Team
+  group: Group
+}
+
+# ─── Audit & Compliance ──────────────────────────────────────────────────────
+
+type Audit {
+  id: ID!
+  createAt: DateTime!
+  userId: ID!
+  action: String!
+  extraInfo: String
+  ipAddress: String
+  sessionId: ID
+  user: User
+}
+
+type Compliance {
+  id: ID!
+  createAt: DateTime!
+  userId: ID!
+  status: String!
+  count: Int!
+  desc: String!
+  type: String!
+  startAt: DateTime
+  endAt: DateTime
+  keywords: String
+  emails: String
+  user: User
+}
+
+type Log {
+  callerFuncname: String
+  callerLineno: Int
+  level: String!
+  msg: String!
+  timestamp: DateTime!
+  worker: String
+}
+
+# ─── Bots ────────────────────────────────────────────────────────────────────
+
+type Bot {
+  userId: ID!
+  username: String!
+  displayName: String
+  description: String
+  ownerId: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  lastIconUpdate: DateTime
+  owner: User
+  user: User
+}
+
+# ─── System & Config ─────────────────────────────────────────────────────────
+
+type System {
+  id: ID!
+  value: String!
+}
+
+type SystemInfo {
+  serverId: ID!
+  buildNumber: String!
+  buildDate: String!
+  buildHash: String!
+  buildHashEnterprise: String
+  enabledDeveloper: Boolean!
+  siteURL: String!
+  features: JSON
+}
+
+type Config {
+  serviceSettings: JSON
+  teamSettings: JSON
+  clientRequirementsSettings: JSON
+  sqlSettings: JSON
+  logSettings: JSON
+  notificationLogSettings: JSON
+  passwordSettings: JSON
+  fileSettings: JSON
+  emailSettings: JSON
+  rateLimitSettings: JSON
+  privacySettings: JSON
+  supportSettings: JSON
+  gitLabSettings: JSON
+  googleSettings: JSON
+  office365Settings: JSON
+  ldapSettings: JSON
+  complianceSettings: JSON
+  localizationSettings: JSON
+  samlSettings: JSON
+  nativeAppSettings: JSON
+  clusterSettings: JSON
+  metricsSettings: JSON
+  experimentalSettings: JSON
+  analyticsSettings: JSON
+  elasticsearchSettings: JSON
+  blevesettings: JSON
+  dataRetentionSettings: JSON
+  messageExportSettings: JSON
+  jobSettings: JSON
+  pluginSettings: JSON
+  displaySettings: JSON
+  imageProxySettings: JSON
+  serviceEnvironment: String
+}
+
+# ─── Invites ─────────────────────────────────────────────────────────────────
+
+type Invite {
+  inviteId: ID!
+  inviteType: String!
+  teamId: ID
+  channelId: ID
+  inviteLink: String!
+  createAt: DateTime!
+  expiresAt: DateTime
+  team: Team
+  channel: Channel
+}
+
+type InviteMember {
+  email: String!
+  inviteId: ID!
+  status: String!
+  error: String
+}
+
+# ─── Shared Channels & Remote Clusters ───────────────────────────────────────
+
+type SharedChannel {
+  id: ID!
+  teamId: ID!
+  home: Boolean!
+  readOnly: Boolean!
+  shareHeader: String
+  shareName: String!
+  shareDisplayName: String
+  sharePurpose: String
+  remoteClusterId: ID
+  creatorId: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  channel: Channel
+  remoteCluster: RemoteCluster
+  creator: User
+}
+
+type RemoteCluster {
+  remoteId: ID!
+  name: String!
+  displayName: String
+  siteURL: String!
+  createAt: DateTime!
+  lastPingAt: DateTime
+  token: String
+  remoteToken: String
+  topics: String
+  creatorId: ID!
+  isConfirmed: Boolean!
+  creator: User
+}
+
+# ─── Playbooks ───────────────────────────────────────────────────────────────
+
+type Playbook {
+  id: ID!
+  title: String!
+  description: String
+  teamId: ID!
+  createAt: DateTime!
+  updateAt: DateTime!
+  deleteAt: DateTime
+  public: Boolean!
+  createPublicPlaybookRun: Boolean!
+  checklists: [Checklist!]!
+  members: [User!]
+  inviteUsersEnabled: Boolean
+  invitedUserIds: [ID!]
+  defaultOwnerId: ID
+  broadcastChannelIds: [ID!]
+  webhookOnCreationURLs: [String!]
+  webhookOnStatusUpdateURLs: [String!]
+  messageOnJoin: String
+  retrospectiveEnabled: Boolean
+  retrospectiveReminderIntervalSeconds: Int
+  retrospectiveTemplate: String
+  team: Team
+  defaultOwner: User
+}
+
+type Checklist {
+  title: String!
+  items: [ChecklistItem!]!
+}
+
+type ChecklistItem {
+  id: ID!
+  title: String!
+  description: String
+  state: String!
+  stateModified: DateTime
+  assigneeId: ID
+  assigneeModified: DateTime
+  command: String
+  commandLastRun: DateTime
+  dueDate: DateTime
+  assignee: User
+}
+
+type PlaybookRun {
+  id: ID!
+  name: String!
+  summary: String
+  ownerUserId: ID!
+  reporterUserId: ID!
+  teamId: ID!
+  channelId: ID!
+  createAt: DateTime!
+  endAt: DateTime
+  deleteAt: DateTime
+  activeStage: Int!
+  activeStageTitle: String
+  postId: ID
+  playbookId: ID!
+  checklists: [Checklist!]!
+  statusPosts: [StatusUpdate!]!
+  currentStatus: String!
+  lastStatusUpdateAt: DateTime
+  reminderPostId: ID
+  reminderMessageTemplate: String
+  reminderTimerDefaultSeconds: Int
+  previousReminder: DateTime
+  retrospective: String
+  retrospectivePublishedAt: DateTime
+  retrospectiveWasCanceled: Boolean
+  participantIds: [ID!]
+  timeline: [TimelineEvent!]!
+  owner: User
+  reporter: User
+  team: Team
+  channel: Channel
+  playbook: Playbook
+}
+
+type PlaybookTask {
+  id: ID!
+  playbookId: ID!
+  checklistIndex: Int!
+  itemIndex: Int!
+  title: String!
+  description: String
+  command: String
+  assigneeId: ID
+  dueDate: DateTime
+  state: String!
+  assignee: User
+  playbook: Playbook
+}
+
+type StatusUpdate {
+  postId: ID!
+  status: String!
+  createAt: DateTime!
+  post: Post
+}
+
+type TimelineEvent {
+  id: ID!
+  playbookRunId: ID!
+  createAt: DateTime!
+  deleteAt: DateTime
+  eventAt: DateTime!
+  eventType: String!
+  summary: String!
+  details: String
+  postId: ID
+  subjectUserId: ID
+  creatorUserId: ID!
+  subjectUser: User
+  creator: User
+}
+
+type Retrospective {
+  playbookRunId: ID!
+  text: String!
+  publishedAt: DateTime
+  wasCanceled: Boolean!
+}
+
+# ─── Cloud ───────────────────────────────────────────────────────────────────
+
+type CloudSubscription {
+  id: ID!
+  customerId: ID!
+  productId: ID!
+  addons: [CloudAddon!]
+  startAt: DateTime!
+  endAt: DateTime
+  createAt: DateTime!
+  seats: Int
+  status: String!
+  isFreeTrial: Boolean
+  trialEndAt: DateTime
+  delinquentSince: DateTime
+}
+
+type CloudCustomer {
+  id: ID!
+  creatorId: ID!
+  email: String!
+  name: String!
+  numEmployees: Int
+  contactFirstName: String
+  contactLastName: String
+  billingAddress: CloudAddress
+  companyAddress: CloudAddress
+  paymentMethod: CloudPaymentMethod
+}
+
+type CloudAddress {
+  city: String
+  country: String
+  line1: String
+  line2: String
+  postalCode: String
+  state: String
+}
+
+type CloudPaymentMethod {
+  type: String
+  lastFour: String
+  expMonth: Int
+  expYear: Int
+  cardBrand: String
+  name: String
+}
+
+type CloudAddon {
+  id: ID!
+  quantity: Int!
+}
+
+# ─── Import & Export ─────────────────────────────────────────────────────────
+
+type Import {
+  id: ID!
+  name: String!
+  createAt: DateTime!
+  size: Int!
+}
+
+type Export {
+  id: ID!
+  jobType: String!
+  status: String!
+  createAt: DateTime!
+  startAt: DateTime
+  lastActivityAt: DateTime
+  data: JSON
+}
+
+# ─── Root Query & Mutations ───────────────────────────────────────────────────
+
+type Query {
+  # Users
+  user(id: ID!): User
+  userByUsername(username: String!): User
+  users(page: Int, perPage: Int, inTeam: ID, inChannel: ID, notInChannel: ID, notInTeam: ID, roles: String): [User!]!
+  me: User
+
+  # Teams
+  team(id: ID!): Team
+  teams(page: Int, perPage: Int): [Team!]!
+  teamByName(name: String!): Team
+  teamMembers(teamId: ID!, page: Int, perPage: Int): [TeamMember!]!
+  teamStats(teamId: ID!): TeamStats
+
+  # Channels
+  channel(id: ID!): Channel
+  channels(teamId: ID!, page: Int, perPage: Int): [Channel!]!
+  channelByName(teamId: ID!, name: String!): Channel
+  channelMembers(channelId: ID!, page: Int, perPage: Int): [ChannelMember!]!
+  channelStats(channelId: ID!): ChannelStats
+  directChannels(userId: ID!): [Channel!]!
+
+  # Posts
+  post(id: ID!): Post
+  postsForChannel(channelId: ID!, page: Int, perPage: Int, since: DateTime, before: ID, after: ID): [Post!]!
+  postsSearch(teamId: ID!, terms: String!, isOrSearch: Boolean, timeZoneOffset: Int, includeDeletedChannels: Boolean, page: Int, perPage: Int): [Post!]!
+
+  # Threads
+  thread(threadId: ID!, teamId: ID!, userId: ID!): Thread
+  threadsForUser(userId: ID!, teamId: ID!, page: Int, perPage: Int): [Thread!]!
+
+  # Files
+  file(fileId: ID!): FileAttachment
+  filesForPost(postId: ID!): [FileAttachment!]!
+
+  # Roles
+  role(id: ID!): Role
+  roleByName(name: String!): Role
+  roles(page: Int, perPage: Int): [Role!]!
+
+  # Schemes
+  scheme(id: ID!): Scheme
+  schemes(scope: SchemeScope, page: Int, perPage: Int): [Scheme!]!
+
+  # Emoji
+  emoji(id: ID!): Emoji
+  emojis(page: Int, perPage: Int, sort: String): [Emoji!]!
+
+  # Webhooks
+  incomingWebhook(hookId: ID!): IncomingWebhook
+  incomingWebhooks(teamId: ID, page: Int, perPage: Int): [IncomingWebhook!]!
+  outgoingWebhook(hookId: ID!): OutgoingWebhook
+  outgoingWebhooks(teamId: ID!, channelId: ID, page: Int, perPage: Int): [OutgoingWebhook!]!
+
+  # Commands
+  command(commandId: ID!): Command
+  commands(teamId: ID, customOnly: Boolean, page: Int, perPage: Int): [Command!]!
+
+  # OAuth
+  oauthApp(appId: ID!): OAuth2App
+  oauthApps(page: Int, perPage: Int): [OAuth2App!]!
+
+  # Plugins
+  plugin(pluginId: ID!): Plugin
+  plugins: [Plugin!]!
+
+  # Groups
+  group(groupId: ID!): Group
+  groups(page: Int, perPage: Int, q: String, notAssociatedToTeam: ID, notAssociatedToChannel: ID, includeTimezones: Boolean, filterAllowReference: Boolean): [Group!]!
+
+  # Bots
+  bot(userId: ID!): Bot
+  bots(page: Int, perPage: Int, includeDeleted: Boolean, onlyOrphaned: Boolean): [Bot!]!
+
+  # Audit
+  audits(userId: ID, page: Int, perPage: Int): [Audit!]!
+
+  # Compliance
+  compliances: [Compliance!]!
+
+  # System
+  systemInfo: SystemInfo
+  config: Config
+  logs(page: Int, perPage: Int, logFile: String): [Log!]!
+
+  # Statuses
+  status(userId: ID!): Status
+  statuses(userIds: [ID!]!): [Status!]!
+
+  # Preferences
+  preferences(userId: ID!, category: String): [Preference!]!
+
+  # Shared Channels
+  sharedChannel(channelId: ID!): SharedChannel
+  sharedChannels(teamId: ID!, page: Int, perPage: Int): [SharedChannel!]!
+  remoteClusters: [RemoteCluster!]!
+
+  # Playbooks
+  playbook(id: ID!): Playbook
+  playbooks(teamId: ID!, page: Int, perPage: Int, sort: String, direction: String): [Playbook!]!
+  playbookRun(id: ID!): PlaybookRun
+  playbookRuns(teamId: ID!, playbookId: ID, status: String, ownerUserId: ID, page: Int, perPage: Int, sort: String, direction: String): [PlaybookRun!]!
+
+  # Cloud
+  cloudSubscription: CloudSubscription
+  cloudCustomer: CloudCustomer
+
+  # Import/Export
+  imports: [Import!]!
+  exports: [Export!]!
+}
+
+type Mutation {
+  # Users
+  createUser(user: UserInput!): User!
+  updateUser(id: ID!, user: UserInput!): User!
+  deleteUser(id: ID!): Boolean!
+  updateUserRoles(userId: ID!, roles: String!): Boolean!
+  updateUserPassword(userId: ID!, currentPassword: String, newPassword: String!): Boolean!
+  createUserAccessToken(userId: ID!, description: String!): UserSession!
+  revokeUserSession(userId: ID!, sessionId: ID!): Boolean!
+
+  # Teams
+  createTeam(team: TeamInput!): Team!
+  updateTeam(id: ID!, team: TeamInput!): Team!
+  deleteTeam(id: ID!): Boolean!
+  addTeamMember(teamId: ID!, userId: ID!, roles: String): TeamMember!
+  removeTeamMember(teamId: ID!, userId: ID!): Boolean!
+
+  # Channels
+  createChannel(channel: ChannelInput!): Channel!
+  updateChannel(id: ID!, channel: ChannelInput!): Channel!
+  deleteChannel(id: ID!): Boolean!
+  addChannelMember(channelId: ID!, userId: ID!, postRootId: String): ChannelMember!
+  removeChannelMember(channelId: ID!, userId: ID!): Boolean!
+  createDirectChannel(userIds: [ID!]!): Channel!
+  createGroupChannel(userIds: [ID!]!): Channel!
+
+  # Posts
+  createPost(post: PostInput!): Post!
+  updatePost(id: ID!, post: PostInput!): Post!
+  deletePost(id: ID!): Boolean!
+  pinPost(postId: ID!): Boolean!
+  unpinPost(postId: ID!): Boolean!
+
+  # Reactions
+  addReaction(userId: ID!, postId: ID!, emojiName: String!): Reaction!
+  removeReaction(userId: ID!, postId: ID!, emojiName: String!): Boolean!
+
+  # Files
+  uploadFile(channelId: ID!, file: Upload!): FileAttachment!
+
+  # Threads
+  followThread(userId: ID!, teamId: ID!, threadId: ID!): Boolean!
+  unfollowThread(userId: ID!, teamId: ID!, threadId: ID!): Boolean!
+  updateThreadRead(userId: ID!, teamId: ID!, threadId: ID!, timestamp: DateTime!): Boolean!
+
+  # Roles
+  updateRole(id: ID!, permissions: [String!]!): Role!
+
+  # Emoji
+  createEmoji(emoji: EmojiInput!, image: Upload!): Emoji!
+  deleteEmoji(emojiId: ID!): Boolean!
+
+  # Webhooks
+  createIncomingWebhook(hook: IncomingWebhookInput!): IncomingWebhook!
+  updateIncomingWebhook(hookId: ID!, hook: IncomingWebhookInput!): IncomingWebhook!
+  deleteIncomingWebhook(hookId: ID!): Boolean!
+  createOutgoingWebhook(hook: OutgoingWebhookInput!): OutgoingWebhook!
+  deleteOutgoingWebhook(hookId: ID!): Boolean!
+
+  # Commands
+  createCommand(command: CommandInput!): Command!
+  updateCommand(commandId: ID!, command: CommandInput!): Command!
+  deleteCommand(commandId: ID!): Boolean!
+
+  # OAuth
+  createOAuthApp(app: OAuth2AppInput!): OAuth2App!
+  updateOAuthApp(appId: ID!, app: OAuth2AppInput!): OAuth2App!
+  deleteOAuthApp(appId: ID!): Boolean!
+
+  # Plugins
+  enablePlugin(pluginId: ID!): Boolean!
+  disablePlugin(pluginId: ID!): Boolean!
+  removePlugin(pluginId: ID!): Boolean!
+
+  # Bots
+  createBot(bot: BotInput!): Bot!
+  updateBot(userId: ID!, bot: BotInput!): Bot!
+  disableBot(userId: ID!): Bot!
+  enableBot(userId: ID!): Bot!
+
+  # Config
+  updateConfig(config: JSON!): Config!
+
+  # Status
+  updateStatus(userId: ID!, status: String!, dndEndTime: DateTime): Status!
+
+  # Preferences
+  updatePreferences(userId: ID!, preferences: [PreferenceInput!]!): Boolean!
+  deletePreferences(userId: ID!, preferences: [PreferenceInput!]!): Boolean!
+
+  # Playbooks
+  createPlaybook(playbook: PlaybookInput!): Playbook!
+  updatePlaybook(id: ID!, playbook: PlaybookInput!): Playbook!
+  deletePlaybook(id: ID!): Boolean!
+  createPlaybookRun(playbookRun: PlaybookRunInput!): PlaybookRun!
+  updatePlaybookRun(id: ID!, status: String, currentStatus: String): PlaybookRun!
+  finishPlaybookRun(id: ID!): Boolean!
+  updateChecklist(playbookRunId: ID!, checklistIndex: Int!, items: [ChecklistItemInput!]!): Boolean!
+  setChecklistItemState(playbookRunId: ID!, checklistIndex: Int!, itemIndex: Int!, newState: String!): Boolean!
+}
+
+# ─── Input Types ─────────────────────────────────────────────────────────────
+
+input UserInput {
+  username: String!
+  email: String!
+  password: String
+  firstName: String
+  lastName: String
+  nickname: String
+  position: String
+  locale: String
+  props: JSON
+  notifyProps: JSON
+}
+
+input TeamInput {
+  displayName: String!
+  name: String!
+  description: String
+  type: TeamType!
+  companyName: String
+  allowedDomains: String
+  allowOpenInvite: Boolean
+}
+
+input ChannelInput {
+  teamId: ID!
+  displayName: String!
+  name: String!
+  type: ChannelType!
+  header: String
+  purpose: String
+}
+
+input PostInput {
+  channelId: ID!
+  message: String!
+  rootId: ID
+  fileIds: [ID!]
+  props: JSON
+  metadata: JSON
+}
+
+input IncomingWebhookInput {
+  channelId: ID!
+  teamId: ID!
+  displayName: String
+  description: String
+  username: String
+  iconURL: String
+  channelLocked: Boolean
+}
+
+input OutgoingWebhookInput {
+  teamId: ID!
+  channelId: ID
+  triggerWords: [String!]!
+  triggerWhen: Int
+  callbackUrls: [String!]!
+  displayName: String
+  description: String
+  contentType: String
+  username: String
+  iconURL: String
+}
+
+input CommandInput {
+  teamId: ID!
+  trigger: String!
+  method: String!
+  url: String!
+  username: String
+  iconURL: String
+  autoComplete: Boolean
+  autoCompleteDesc: String
+  autoCompleteHint: String
+  displayName: String!
+  description: String
+}
+
+input OAuth2AppInput {
+  name: String!
+  description: String
+  iconURL: String
+  callbackUrls: [String!]!
+  homepage: String!
+  isTrusted: Boolean
+}
+
+input EmojiInput {
+  creatorId: ID!
+  name: String!
+}
+
+input BotInput {
+  username: String!
+  displayName: String
+  description: String
+}
+
+input PreferenceInput {
+  userId: ID!
+  category: String!
+  name: String!
+  value: String!
+}
+
+input PlaybookInput {
+  title: String!
+  description: String
+  teamId: ID!
+  public: Boolean
+  checklists: [ChecklistInput!]
+  inviteUsersEnabled: Boolean
+  invitedUserIds: [ID!]
+  broadcastChannelIds: [ID!]
+  webhookOnCreationURLs: [String!]
+  retrospectiveEnabled: Boolean
+  retrospectiveTemplate: String
+}
+
+input ChecklistInput {
+  title: String!
+  items: [ChecklistItemInput!]!
+}
+
+input ChecklistItemInput {
+  title: String!
+  description: String
+  command: String
+  assigneeId: ID
+  dueDate: DateTime
+}
+
+input PlaybookRunInput {
+  name: String!
+  playbookId: ID!
+  ownerUserId: ID!
+  teamId: ID!
+  channelId: ID
+  postId: ID
+}

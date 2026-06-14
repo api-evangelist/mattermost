@@ -1,94 +1,91 @@
 aid: mattermost
 name: Mattermost
-description: >-
-  Mattermost is an open-source collaboration platform for technical teams
-  that combines secure team messaging, workflow automation, voice/video
-  calling, and integrations as a self-hosted Slack alternative. The
-  Mattermost REST API exposes full programmatic control over users,
-  teams, channels, posts, files, integrations, plugins, and webhooks.
+description: Mattermost is an open-source collaboration platform for technical teams
+  that combines secure team messaging, workflow automation, voice/video calling, and
+  integrations as a self-hosted Slack alternative. The Mattermost REST API exposes
+  full programmatic control over users, teams, channels, posts, files, integrations,
+  plugins, and webhooks.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Messaging
-  - Collaboration
-  - Team Chat
-  - Open Source
-  - DevOps
-  - Self-Hosted
+- Messaging
+- Collaboration
+- Team Chat
+- Open Source
+- DevOps
+- Self-Hosted
 url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/apis.yml
 created: '2026-05-11'
 modified: '2026-05-29'
 specificationVersion: '0.19'
 apis:
-  - aid: mattermost:rest-api
-    name: Mattermost REST API
-    description: >-
-      REST API v4 for managing users, teams, channels, posts, threads,
-      files, integrations, plugins, webhooks, slash commands, and
-      OAuth applications. Authentication uses Personal Access Tokens
-      or session tokens via Bearer authentication.
-    humanURL: https://api.mattermost.com/
-    baseURL: https://your-mattermost-server.com/api/v4
-    tags:
-      - Messaging
-      - Users
-      - Teams
-      - Channels
-      - Posts
-      - Webhooks
-      - Integrations
-    properties:
-      - type: Documentation
-        url: https://api.mattermost.com/
-      - type: APIReference
-        url: https://developers.mattermost.com/integrate/reference/rest-api/
-      - type: OpenAPI Source
-        url: https://github.com/mattermost/mattermost-api-reference
-      - type: Developer Guide
-        url: https://developers.mattermost.com/contribute/more-info/server/rest-api/
-  - aid: mattermost:websocket-api
-    name: Mattermost WebSocket API
-    description: >-
-      Real-time WebSocket event stream for Mattermost v4. Clients connect
-      to /api/v4/websocket, authenticate via cookie, Authorization header,
-      or an authentication_challenge action, and receive event envelopes
-      (event, data, broadcast, seq) covering posts, channels, users,
-      teams, reactions, typing, status, threads, plugins, and more. Client
-      actions user_typing, get_statuses, and get_statuses_by_ids are
-      supported over the same socket.
-    humanURL: https://developers.mattermost.com/api-documentation
-    baseURL: wss://your-mattermost-server.com/api/v4/websocket
-    tags:
-      - WebSocket
-      - Events
-      - Real-Time
-      - Messaging
-      - AsyncAPI
-    properties:
-      - type: Documentation
-        url: https://developers.mattermost.com/api-documentation
-      - type: AsyncAPI
-        url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/asyncapi/mattermost-asyncapi.yml
-      - type: APIReference
-        url: https://developers.mattermost.com/integrate/reference/rest-api/
-common:
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/mattermost
-  - type: Website
-    url: https://mattermost.com
+- aid: mattermost:rest-api
+  name: Mattermost REST API
+  description: REST API v4 for managing users, teams, channels, posts, threads, files,
+    integrations, plugins, webhooks, slash commands, and OAuth applications. Authentication
+    uses Personal Access Tokens or session tokens via Bearer authentication.
+  humanURL: https://api.mattermost.com/
+  baseURL: https://your-mattermost-server.com/api/v4
+  tags:
+  - Messaging
+  - Users
+  - Teams
+  - Channels
+  - Posts
+  - Webhooks
+  - Integrations
+  properties:
   - type: Documentation
-    url: https://docs.mattermost.com
-  - type: Developer Portal
-    url: https://developers.mattermost.com/
-  - type: GitHubOrganization
-    url: https://github.com/mattermost
-  - type: SignUp
-    url: https://mattermost.com/sign-up/
-  - type: Pricing
-    url: https://mattermost.com/pricing/
-  - name: MCP Server
-    url: https://github.com/mattermost/mmctl-mcp
-    type: MCPServer
+    url: https://api.mattermost.com/
+  - type: APIReference
+    url: https://developers.mattermost.com/integrate/reference/rest-api/
+  - type: OpenAPI Source
+    url: https://github.com/mattermost/mattermost-api-reference
+  - type: Developer Guide
+    url: https://developers.mattermost.com/contribute/more-info/server/rest-api/
+  - url: graphql/mattermost-graphql.md
+    type: GraphQL
+- aid: mattermost:websocket-api
+  name: Mattermost WebSocket API
+  description: Real-time WebSocket event stream for Mattermost v4. Clients connect
+    to /api/v4/websocket, authenticate via cookie, Authorization header, or an authentication_challenge
+    action, and receive event envelopes (event, data, broadcast, seq) covering posts,
+    channels, users, teams, reactions, typing, status, threads, plugins, and more.
+    Client actions user_typing, get_statuses, and get_statuses_by_ids are supported
+    over the same socket.
+  humanURL: https://developers.mattermost.com/api-documentation
+  baseURL: wss://your-mattermost-server.com/api/v4/websocket
+  tags:
+  - WebSocket
+  - Events
+  - Real-Time
+  - Messaging
+  - AsyncAPI
+  properties:
+  - type: Documentation
+    url: https://developers.mattermost.com/api-documentation
+  - type: AsyncAPI
+    url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/asyncapi/mattermost-asyncapi.yml
+  - type: APIReference
+    url: https://developers.mattermost.com/integrate/reference/rest-api/
+common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/mattermost
+- type: Website
+  url: https://mattermost.com
+- type: Documentation
+  url: https://docs.mattermost.com
+- type: Developer Portal
+  url: https://developers.mattermost.com/
+- type: GitHubOrganization
+  url: https://github.com/mattermost
+- type: SignUp
+  url: https://mattermost.com/sign-up/
+- type: Pricing
+  url: https://mattermost.com/pricing/
+- name: MCP Server
+  url: https://github.com/mattermost/mmctl-mcp
+  type: MCPServer
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
