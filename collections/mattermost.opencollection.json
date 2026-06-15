@@ -1,0 +1,873 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mattermost REST API",
+    "version": "4"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Login to Mattermost",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/users/login",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Login to Mattermost"
+        },
+        {
+          "info": {
+            "name": "End the user session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/users/logout"
+          },
+          "docs": "End the user session"
+        },
+        {
+          "info": {
+            "name": "List users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/users",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "in_team",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "in_channel",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List users"
+        },
+        {
+          "info": {
+            "name": "Create a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a user"
+        },
+        {
+          "info": {
+            "name": "Get a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a user"
+        },
+        {
+          "info": {
+            "name": "Update a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a user"
+        },
+        {
+          "info": {
+            "name": "Deactivate a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deactivate a user"
+        },
+        {
+          "info": {
+            "name": "Partially update a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/users/:user_id/patch",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Partially update a user"
+        },
+        {
+          "info": {
+            "name": "Search users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/users/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search users"
+        },
+        {
+          "info": {
+            "name": "Autocomplete users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/users/autocomplete",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Autocomplete users"
+        },
+        {
+          "info": {
+            "name": "List active sessions for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/users/:user_id/sessions",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List active sessions for a user"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Teams",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/teams",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List teams"
+        },
+        {
+          "info": {
+            "name": "Create a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/teams",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a team"
+        },
+        {
+          "info": {
+            "name": "Get a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a team"
+        },
+        {
+          "info": {
+            "name": "Update a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a team"
+        },
+        {
+          "info": {
+            "name": "Soft delete a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Soft delete a team"
+        },
+        {
+          "info": {
+            "name": "Patch a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id/patch",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch a team"
+        },
+        {
+          "info": {
+            "name": "Search teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/teams/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search teams"
+        },
+        {
+          "info": {
+            "name": "List team members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id/members",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List team members"
+        },
+        {
+          "info": {
+            "name": "Add a user to a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id/members",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a user to a team"
+        },
+        {
+          "info": {
+            "name": "Remove a user from a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id/members/:user_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a user from a team"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Channels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all channels (sysadmin)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/channels"
+          },
+          "docs": "List all channels (sysadmin)"
+        },
+        {
+          "info": {
+            "name": "Create a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/channels",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a channel"
+        },
+        {
+          "info": {
+            "name": "Get a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a channel"
+        },
+        {
+          "info": {
+            "name": "Update a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a channel"
+        },
+        {
+          "info": {
+            "name": "Archive a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Archive a channel"
+        },
+        {
+          "info": {
+            "name": "Create a direct message channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/channels/direct",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a direct message channel"
+        },
+        {
+          "info": {
+            "name": "Create a group message channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/channels/group",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a group message channel"
+        },
+        {
+          "info": {
+            "name": "List channel members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id/members",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List channel members"
+        },
+        {
+          "info": {
+            "name": "Add a user to a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id/members",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a user to a channel"
+        },
+        {
+          "info": {
+            "name": "Remove a user from a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id/members/:user_id",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a user from a channel"
+        },
+        {
+          "info": {
+            "name": "Get public channels for a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id/channels",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get public channels for a team"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Posts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List posts in a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id/posts",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List posts in a channel"
+        },
+        {
+          "info": {
+            "name": "Create a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/posts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a post"
+        },
+        {
+          "info": {
+            "name": "Create an ephemeral post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/posts/ephemeral",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an ephemeral post"
+        },
+        {
+          "info": {
+            "name": "Get a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a post"
+        },
+        {
+          "info": {
+            "name": "Update a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a post"
+        },
+        {
+          "info": {
+            "name": "Delete a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a post"
+        },
+        {
+          "info": {
+            "name": "Patch a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id/patch",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch a post"
+        },
+        {
+          "info": {
+            "name": "Get a thread by post id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id/thread",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a thread by post id"
+        },
+        {
+          "info": {
+            "name": "Pin a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id/pin",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Pin a post"
+        },
+        {
+          "info": {
+            "name": "Unpin a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id/unpin",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Unpin a post"
+        },
+        {
+          "info": {
+            "name": "Search posts in a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id/posts/search",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search posts in a team"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
