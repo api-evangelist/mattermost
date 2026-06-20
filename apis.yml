@@ -6,7 +6,7 @@ description: Mattermost is an open-source collaboration platform for technical t
   full programmatic control over users, teams, channels, posts, files, integrations,
   plugins, and webhooks.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Messaging
 - Collaboration
