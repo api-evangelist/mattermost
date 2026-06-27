@@ -75,11 +75,11 @@ common:
   url: https://mattermost.com
 - type: Documentation
   url: https://docs.mattermost.com
-- type: Developer Portal
+- type: DeveloperPortal
   url: https://developers.mattermost.com/
 - type: GitHubOrganization
   url: https://github.com/mattermost
-- type: SignUp
+- type: Signup
   url: https://mattermost.com/sign-up/
 - type: Pricing
   url: https://mattermost.com/pricing/
