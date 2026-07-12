@@ -69,6 +69,14 @@ apis:
   - type: APIReference
     url: https://developers.mattermost.com/integrate/reference/rest-api/
 common:
+- type: TrustCenter
+  url: security/mattermost-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/mattermost-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/mattermost-domain-security.yml
+- type: Authentication
+  url: authentication/mattermost-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/mattermost
 - type: Website
@@ -86,6 +94,8 @@ common:
 - name: MCP Server
   url: https://github.com/mattermost/mmctl-mcp
   type: MCPServer
+- url: https://mattermost.com/blog/feed/
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

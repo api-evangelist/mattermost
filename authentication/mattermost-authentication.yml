@@ -1,0 +1,13 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/mattermost-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Personal Access Token or session token issued by /users/login.
+  sources:
+  - openapi/mattermost-openapi.yml
