@@ -69,6 +69,8 @@ apis:
   - type: APIReference
     url: https://developers.mattermost.com/integrate/reference/rest-api/
 common:
+- type: AgenticAccess
+  url: agentic-access/mattermost-agentic-access.yml
 - type: TrustCenter
   url: security/mattermost-trust-center.yml
 - type: VulnerabilityDisclosure
