@@ -1,0 +1,206 @@
+openapi: 3.1.0
+info:
+  title: Mattermost REST Channels API
+  version: '4'
+  description: 'Mattermost REST API v4 for managing users, teams, channels, posts, threads,
+
+    files, integrations, plugins, webhooks, slash commands, and OAuth
+
+    applications on a self-hosted or cloud Mattermost server. Authentication
+
+    uses Personal Access Tokens or session tokens carried as a Bearer token.
+
+    '
+  contact:
+    name: Mattermost API Documentation
+    url: https://developers.mattermost.com/api-documentation
+servers:
+- url: https://{your-mattermost-server}/api/v4
+  description: Self-hosted Mattermost server
+  variables:
+    your-mattermost-server:
+      default: your-mattermost-server.com
+      description: Hostname of your Mattermost server
+security:
+- bearerAuth: []
+tags:
+- name: Channels
+paths:
+  /channels:
+    get:
+      tags:
+      - Channels
+      summary: List all channels (sysadmin)
+      responses:
+        '200':
+          description: Channels
+    post:
+      tags:
+      - Channels
+      summary: Create a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+      responses:
+        '201':
+          description: Channel created
+  /channels/{channel_id}:
+    parameters:
+    - in: path
+      name: channel_id
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Channels
+      summary: Get a channel
+      responses:
+        '200':
+          description: Channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+    put:
+      tags:
+      - Channels
+      summary: Update a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Channel'
+      responses:
+        '200':
+          description: Updated
+    delete:
+      tags:
+      - Channels
+      summary: Archive a channel
+      responses:
+        '200':
+          description: Archived
+  /channels/direct:
+    post:
+      tags:
+      - Channels
+      summary: Create a direct message channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '201':
+          description: DM channel
+  /channels/group:
+    post:
+      tags:
+      - Channels
+      summary: Create a group message channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '201':
+          description: Group channel
+  /channels/{channel_id}/members:
+    parameters:
+    - in: path
+      name: channel_id
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Channels
+      summary: List channel members
+      responses:
+        '200':
+          description: Members
+    post:
+      tags:
+      - Channels
+      summary: Add a user to a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+      responses:
+        '201':
+          description: Added
+  /channels/{channel_id}/members/{user_id}:
+    delete:
+      tags:
+      - Channels
+      summary: Remove a user from a channel
+      parameters:
+      - in: path
+        name: channel_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Removed
+  /teams/{team_id}/channels:
+    get:
+      tags:
+      - Channels
+      summary: Get public channels for a team
+      parameters:
+      - in: path
+        name: team_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Channels
+components:
+  schemas:
+    Channel:
+      type: object
+      properties:
+        id:
+          type: string
+        team_id:
+          type: string
+        type:
+          type: string
+        display_name:
+          type: string
+        name:
+          type: string
+        header:
+          type: string
+        purpose:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token or session token issued by /users/login.

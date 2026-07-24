@@ -1,0 +1,220 @@
+openapi: 3.1.0
+info:
+  title: Mattermost REST Channels Teams API
+  version: '4'
+  description: 'Mattermost REST API v4 for managing users, teams, channels, posts, threads,
+
+    files, integrations, plugins, webhooks, slash commands, and OAuth
+
+    applications on a self-hosted or cloud Mattermost server. Authentication
+
+    uses Personal Access Tokens or session tokens carried as a Bearer token.
+
+    '
+  contact:
+    name: Mattermost API Documentation
+    url: https://developers.mattermost.com/api-documentation
+servers:
+- url: https://{your-mattermost-server}/api/v4
+  description: Self-hosted Mattermost server
+  variables:
+    your-mattermost-server:
+      default: your-mattermost-server.com
+      description: Hostname of your Mattermost server
+security:
+- bearerAuth: []
+tags:
+- name: Teams
+paths:
+  /teams:
+    get:
+      tags:
+      - Teams
+      summary: List teams
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          default: 60
+      responses:
+        '200':
+          description: A page of teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+    post:
+      tags:
+      - Teams
+      summary: Create a team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        '201':
+          description: Team created
+  /teams/{team_id}:
+    parameters:
+    - in: path
+      name: team_id
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Teams
+      summary: Get a team
+      responses:
+        '200':
+          description: Team
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+    put:
+      tags:
+      - Teams
+      summary: Update a team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        '200':
+          description: Updated team
+    delete:
+      tags:
+      - Teams
+      summary: Soft delete a team
+      responses:
+        '200':
+          description: Deleted
+  /teams/{team_id}/patch:
+    put:
+      tags:
+      - Teams
+      summary: Patch a team
+      parameters:
+      - in: path
+        name: team_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        '200':
+          description: Patched team
+  /teams/search:
+    post:
+      tags:
+      - Teams
+      summary: Search teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                term:
+                  type: string
+      responses:
+        '200':
+          description: Search results
+  /teams/{team_id}/members:
+    parameters:
+    - in: path
+      name: team_id
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Teams
+      summary: List team members
+      responses:
+        '200':
+          description: Members
+    post:
+      tags:
+      - Teams
+      summary: Add a user to a team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                team_id:
+                  type: string
+                user_id:
+                  type: string
+      responses:
+        '201':
+          description: Added
+  /teams/{team_id}/members/{user_id}:
+    delete:
+      tags:
+      - Teams
+      summary: Remove a user from a team
+      parameters:
+      - in: path
+        name: team_id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Removed
+components:
+  schemas:
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        company_name:
+          type: string
+        allowed_domains:
+          type: string
+        invite_id:
+          type: string
+        allow_open_invite:
+          type: boolean
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token or session token issued by /users/login.

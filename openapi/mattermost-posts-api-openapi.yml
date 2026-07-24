@@ -1,0 +1,246 @@
+openapi: 3.1.0
+info:
+  title: Mattermost REST Channels Posts API
+  version: '4'
+  description: 'Mattermost REST API v4 for managing users, teams, channels, posts, threads,
+
+    files, integrations, plugins, webhooks, slash commands, and OAuth
+
+    applications on a self-hosted or cloud Mattermost server. Authentication
+
+    uses Personal Access Tokens or session tokens carried as a Bearer token.
+
+    '
+  contact:
+    name: Mattermost API Documentation
+    url: https://developers.mattermost.com/api-documentation
+servers:
+- url: https://{your-mattermost-server}/api/v4
+  description: Self-hosted Mattermost server
+  variables:
+    your-mattermost-server:
+      default: your-mattermost-server.com
+      description: Hostname of your Mattermost server
+security:
+- bearerAuth: []
+tags:
+- name: Posts
+paths:
+  /channels/{channel_id}/posts:
+    get:
+      tags:
+      - Posts
+      summary: List posts in a channel
+      parameters:
+      - in: path
+        name: channel_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: per_page
+        schema:
+          type: integer
+          default: 60
+      - in: query
+        name: since
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Post list
+  /posts:
+    post:
+      tags:
+      - Posts
+      summary: Create a post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '201':
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+  /posts/ephemeral:
+    post:
+      tags:
+      - Posts
+      summary: Create an ephemeral post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                post:
+                  $ref: '#/components/schemas/Post'
+      responses:
+        '201':
+          description: Ephemeral post created
+  /posts/{post_id}:
+    parameters:
+    - in: path
+      name: post_id
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Posts
+      summary: Get a post
+      responses:
+        '200':
+          description: Post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+    put:
+      tags:
+      - Posts
+      summary: Update a post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: Updated post
+    delete:
+      tags:
+      - Posts
+      summary: Delete a post
+      responses:
+        '200':
+          description: Deleted
+  /posts/{post_id}/patch:
+    put:
+      tags:
+      - Posts
+      summary: Patch a post
+      parameters:
+      - in: path
+        name: post_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: Patched post
+  /posts/{post_id}/thread:
+    get:
+      tags:
+      - Posts
+      summary: Get a thread by post id
+      parameters:
+      - in: path
+        name: post_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Thread
+  /posts/{post_id}/pin:
+    post:
+      tags:
+      - Posts
+      summary: Pin a post
+      parameters:
+      - in: path
+        name: post_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Pinned
+  /posts/{post_id}/unpin:
+    post:
+      tags:
+      - Posts
+      summary: Unpin a post
+      parameters:
+      - in: path
+        name: post_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Unpinned
+  /teams/{team_id}/posts/search:
+    post:
+      tags:
+      - Posts
+      summary: Search posts in a team
+      parameters:
+      - in: path
+        name: team_id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                terms:
+                  type: string
+                is_or_search:
+                  type: boolean
+      responses:
+        '200':
+          description: Search results
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+        channel_id:
+          type: string
+        user_id:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+        props:
+          type: object
+        root_id:
+          type: string
+        create_at:
+          type: integer
+        update_at:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token or session token issued by /users/login.
