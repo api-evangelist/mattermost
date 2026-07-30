@@ -6,7 +6,19 @@ description: Mattermost is an open-source collaboration platform for technical t
   full programmatic control over users, teams, channels, posts, files, integrations,
   plugins, and webhooks.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/mattermost.png
 tags:
 - Messaging
 - Collaboration
@@ -21,9 +33,10 @@ specificationVersion: '0.19'
 apis:
 - aid: mattermost:rest-api
   name: Mattermost REST API
-  description: REST API v4 for managing users, teams, channels, posts, threads, files,
-    integrations, plugins, webhooks, slash commands, and OAuth applications. Authentication
-    uses Personal Access Tokens or session tokens via Bearer authentication.
+  description: >-
+    REST API v4 for managing users, teams, channels, posts, threads, files, integrations, plugins, webhooks,
+    slash commands, and OAuth applications. Authentication uses Personal Access Tokens or session tokens
+    via Bearer authentication.
   humanURL: https://api.mattermost.com/
   baseURL: https://your-mattermost-server.com/api/v4
   tags:
@@ -47,11 +60,11 @@ apis:
     type: GraphQL
 - aid: mattermost:websocket-api
   name: Mattermost WebSocket API
-  description: Real-time WebSocket event stream for Mattermost v4. Clients connect
-    to /api/v4/websocket, authenticate via cookie, Authorization header, or an authentication_challenge
-    action, and receive event envelopes (event, data, broadcast, seq) covering posts,
-    channels, users, teams, reactions, typing, status, threads, plugins, and more.
-    Client actions user_typing, get_statuses, and get_statuses_by_ids are supported
+  description: >-
+    Real-time WebSocket event stream for Mattermost v4. Clients connect to /api/v4/websocket, authenticate
+    via cookie, Authorization header, or an authentication_challenge action, and receive event envelopes
+    (event, data, broadcast, seq) covering posts, channels, users, teams, reactions, typing, status, threads,
+    plugins, and more. Client actions user_typing, get_statuses, and get_statuses_by_ids are supported
     over the same socket.
   humanURL: https://developers.mattermost.com/api-documentation
   baseURL: wss://your-mattermost-server.com/api/v4/websocket
@@ -65,9 +78,50 @@ apis:
   - type: Documentation
     url: https://developers.mattermost.com/api-documentation
   - type: AsyncAPI
-    url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/asyncapi/mattermost-asyncapi.yml
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/asyncapi/mattermost-asyncapi.yml
   - type: APIReference
     url: https://developers.mattermost.com/integrate/reference/rest-api/
+- aid: mattermost:mattermost-channels-api
+  name: Mattermost Channels API
+  description: The Channels API from Mattermost — 7 operation(s) for channels.
+  humanURL: https://api.mattermost.com/
+  baseURL: https://your-mattermost-server.com/api/v4
+  tags:
+  - Channels
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermost-channels-api-openapi.yml
+- aid: mattermost:mattermost-posts-api
+  name: Mattermost Posts API
+  description: The Posts API from Mattermost — 9 operation(s) for posts.
+  humanURL: https://api.mattermost.com/
+  baseURL: https://your-mattermost-server.com/api/v4
+  tags:
+  - Posts
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermost-posts-api-openapi.yml
+- aid: mattermost:mattermost-teams-api
+  name: Mattermost Teams API
+  description: The Teams API from Mattermost — 6 operation(s) for teams.
+  humanURL: https://api.mattermost.com/
+  baseURL: https://your-mattermost-server.com/api/v4
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermost-teams-api-openapi.yml
+- aid: mattermost:mattermost-users-api
+  name: Mattermost Users API
+  description: The Users API from Mattermost — 8 operation(s) for users.
+  humanURL: https://api.mattermost.com/
+  baseURL: https://your-mattermost-server.com/api/v4
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/mattermost-users-api-openapi.yml
 common:
 - type: AgenticAccess
   url: agentic-access/mattermost-agentic-access.yml
