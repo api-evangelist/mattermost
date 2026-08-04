@@ -1,0 +1,721 @@
+openapi: 3.1.0
+info:
+  title: Mattermost REST API
+  version: "4"
+  description: |
+    Mattermost REST API v4 for managing users, teams, channels, posts, threads,
+    files, integrations, plugins, webhooks, slash commands, and OAuth
+    applications on a self-hosted or cloud Mattermost server. Authentication
+    uses Personal Access Tokens or session tokens carried as a Bearer token.
+  contact:
+    name: Mattermost API Documentation
+    url: https://developers.mattermost.com/api-documentation
+servers:
+  - url: https://{your-mattermost-server}/api/v4
+    description: Self-hosted Mattermost server
+    variables:
+      your-mattermost-server:
+        default: your-mattermost-server.com
+        description: Hostname of your Mattermost server
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Personal Access Token or session token issued by /users/login.
+  schemas:
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        status_code:
+          type: integer
+        request_id:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        roles:
+          type: string
+        create_at:
+          type: integer
+        update_at:
+          type: integer
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        company_name:
+          type: string
+        allowed_domains:
+          type: string
+        invite_id:
+          type: string
+        allow_open_invite:
+          type: boolean
+    Channel:
+      type: object
+      properties:
+        id:
+          type: string
+        team_id:
+          type: string
+        type:
+          type: string
+        display_name:
+          type: string
+        name:
+          type: string
+        header:
+          type: string
+        purpose:
+          type: string
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+        channel_id:
+          type: string
+        user_id:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+        props:
+          type: object
+        root_id:
+          type: string
+        create_at:
+          type: integer
+        update_at:
+          type: integer
+paths:
+  /users/login:
+    post:
+      tags: [Users]
+      summary: Login to Mattermost
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login_id:
+                  type: string
+                password:
+                  type: string
+                token:
+                  type: string
+                device_id:
+                  type: string
+      responses:
+        "200":
+          description: Successful login. Session token returned in Token header.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /users/logout:
+    post:
+      tags: [Users]
+      summary: End the user session
+      responses:
+        "200":
+          description: Logged out
+  /users:
+    get:
+      tags: [Users]
+      summary: List users
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, default: 0 }
+        - in: query
+          name: per_page
+          schema: { type: integer, default: 60 }
+        - in: query
+          name: in_team
+          schema: { type: string }
+        - in: query
+          name: in_channel
+          schema: { type: string }
+      responses:
+        "200":
+          description: A page of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/User" }
+    post:
+      tags: [Users]
+      summary: Create a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/User" }
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+  /users/{user_id}:
+    parameters:
+      - in: path
+        name: user_id
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Users]
+      summary: Get a user
+      responses:
+        "200":
+          description: User
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+    put:
+      tags: [Users]
+      summary: Update a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/User" }
+      responses:
+        "200":
+          description: Updated user
+    delete:
+      tags: [Users]
+      summary: Deactivate a user
+      responses:
+        "200":
+          description: Deactivated
+  /users/{user_id}/patch:
+    put:
+      tags: [Users]
+      summary: Partially update a user
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/User" }
+      responses:
+        "200":
+          description: Patched user
+  /users/search:
+    post:
+      tags: [Users]
+      summary: Search users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                term: { type: string }
+                team_id: { type: string }
+                in_channel_id: { type: string }
+                not_in_channel_id: { type: string }
+                allow_inactive: { type: boolean }
+      responses:
+        "200":
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/User" }
+  /users/autocomplete:
+    get:
+      tags: [Users]
+      summary: Autocomplete users
+      parameters:
+        - in: query
+          name: name
+          required: true
+          schema: { type: string }
+        - in: query
+          name: team_id
+          schema: { type: string }
+        - in: query
+          name: channel_id
+          schema: { type: string }
+      responses:
+        "200":
+          description: Autocomplete results
+  /users/{user_id}/sessions:
+    get:
+      tags: [Users]
+      summary: List active sessions for a user
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Sessions
+  /teams:
+    get:
+      tags: [Teams]
+      summary: List teams
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, default: 0 }
+        - in: query
+          name: per_page
+          schema: { type: integer, default: 60 }
+      responses:
+        "200":
+          description: A page of teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Team" }
+    post:
+      tags: [Teams]
+      summary: Create a team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Team" }
+      responses:
+        "201":
+          description: Team created
+  /teams/{team_id}:
+    parameters:
+      - in: path
+        name: team_id
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Teams]
+      summary: Get a team
+      responses:
+        "200":
+          description: Team
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Team" }
+    put:
+      tags: [Teams]
+      summary: Update a team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Team" }
+      responses:
+        "200":
+          description: Updated team
+    delete:
+      tags: [Teams]
+      summary: Soft delete a team
+      responses:
+        "200":
+          description: Deleted
+  /teams/{team_id}/patch:
+    put:
+      tags: [Teams]
+      summary: Patch a team
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Team" }
+      responses:
+        "200":
+          description: Patched team
+  /teams/search:
+    post:
+      tags: [Teams]
+      summary: Search teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                term: { type: string }
+      responses:
+        "200":
+          description: Search results
+  /teams/{team_id}/members:
+    parameters:
+      - in: path
+        name: team_id
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Teams]
+      summary: List team members
+      responses:
+        "200":
+          description: Members
+    post:
+      tags: [Teams]
+      summary: Add a user to a team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                team_id: { type: string }
+                user_id: { type: string }
+      responses:
+        "201":
+          description: Added
+  /teams/{team_id}/members/{user_id}:
+    delete:
+      tags: [Teams]
+      summary: Remove a user from a team
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema: { type: string }
+        - in: path
+          name: user_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Removed
+  /channels:
+    get:
+      tags: [Channels]
+      summary: List all channels (sysadmin)
+      responses:
+        "200":
+          description: Channels
+    post:
+      tags: [Channels]
+      summary: Create a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Channel" }
+      responses:
+        "201":
+          description: Channel created
+  /channels/{channel_id}:
+    parameters:
+      - in: path
+        name: channel_id
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Channels]
+      summary: Get a channel
+      responses:
+        "200":
+          description: Channel
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Channel" }
+    put:
+      tags: [Channels]
+      summary: Update a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Channel" }
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Channels]
+      summary: Archive a channel
+      responses:
+        "200":
+          description: Archived
+  /channels/direct:
+    post:
+      tags: [Channels]
+      summary: Create a direct message channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items: { type: string }
+      responses:
+        "201":
+          description: DM channel
+  /channels/group:
+    post:
+      tags: [Channels]
+      summary: Create a group message channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items: { type: string }
+      responses:
+        "201":
+          description: Group channel
+  /channels/{channel_id}/members:
+    parameters:
+      - in: path
+        name: channel_id
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Channels]
+      summary: List channel members
+      responses:
+        "200":
+          description: Members
+    post:
+      tags: [Channels]
+      summary: Add a user to a channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id: { type: string }
+      responses:
+        "201":
+          description: Added
+  /channels/{channel_id}/members/{user_id}:
+    delete:
+      tags: [Channels]
+      summary: Remove a user from a channel
+      parameters:
+        - in: path
+          name: channel_id
+          required: true
+          schema: { type: string }
+        - in: path
+          name: user_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Removed
+  /teams/{team_id}/channels:
+    get:
+      tags: [Channels]
+      summary: Get public channels for a team
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Channels
+  /channels/{channel_id}/posts:
+    get:
+      tags: [Posts]
+      summary: List posts in a channel
+      parameters:
+        - in: path
+          name: channel_id
+          required: true
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 0 }
+        - in: query
+          name: per_page
+          schema: { type: integer, default: 60 }
+        - in: query
+          name: since
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Post list
+  /posts:
+    post:
+      tags: [Posts]
+      summary: Create a post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Post" }
+      responses:
+        "201":
+          description: Post created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Post" }
+  /posts/ephemeral:
+    post:
+      tags: [Posts]
+      summary: Create an ephemeral post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id: { type: string }
+                post: { $ref: "#/components/schemas/Post" }
+      responses:
+        "201":
+          description: Ephemeral post created
+  /posts/{post_id}:
+    parameters:
+      - in: path
+        name: post_id
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Posts]
+      summary: Get a post
+      responses:
+        "200":
+          description: Post
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Post" }
+    put:
+      tags: [Posts]
+      summary: Update a post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Post" }
+      responses:
+        "200":
+          description: Updated post
+    delete:
+      tags: [Posts]
+      summary: Delete a post
+      responses:
+        "200":
+          description: Deleted
+  /posts/{post_id}/patch:
+    put:
+      tags: [Posts]
+      summary: Patch a post
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Post" }
+      responses:
+        "200":
+          description: Patched post
+  /posts/{post_id}/thread:
+    get:
+      tags: [Posts]
+      summary: Get a thread by post id
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Thread
+  /posts/{post_id}/pin:
+    post:
+      tags: [Posts]
+      summary: Pin a post
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Pinned
+  /posts/{post_id}/unpin:
+    post:
+      tags: [Posts]
+      summary: Unpin a post
+      parameters:
+        - in: path
+          name: post_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Unpinned
+  /teams/{team_id}/posts/search:
+    post:
+      tags: [Posts]
+      summary: Search posts in a team
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                terms: { type: string }
+                is_or_search: { type: boolean }
+      responses:
+        "200":
+          description: Search results

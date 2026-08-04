@@ -1,0 +1,20 @@
+{
+  "provider": "mattermost",
+  "sources": [
+    "mattermost-channels-api-openapi.yml",
+    "mattermost-posts-api-openapi.yml",
+    "mattermost-teams-api-openapi.yml",
+    "mattermost-users-api-openapi.yml"
+  ],
+  "outputs": [
+    "mattermost-channels-api-openapi.yml",
+    "mattermost-posts-api-openapi.yml",
+    "mattermost-teams-api-openapi.yml",
+    "mattermost-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
