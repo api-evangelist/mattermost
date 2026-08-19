@@ -1,0 +1,243 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mattermost REST Channels Posts API",
+    "version": "4"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Posts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List posts in a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id/posts",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List posts in a channel"
+        },
+        {
+          "info": {
+            "name": "Create a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/posts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a post"
+        },
+        {
+          "info": {
+            "name": "Create an ephemeral post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/posts/ephemeral",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an ephemeral post"
+        },
+        {
+          "info": {
+            "name": "Get a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a post"
+        },
+        {
+          "info": {
+            "name": "Update a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a post"
+        },
+        {
+          "info": {
+            "name": "Delete a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a post"
+        },
+        {
+          "info": {
+            "name": "Patch a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id/patch",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch a post"
+        },
+        {
+          "info": {
+            "name": "Get a thread by post id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id/thread",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a thread by post id"
+        },
+        {
+          "info": {
+            "name": "Pin a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id/pin",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Pin a post"
+        },
+        {
+          "info": {
+            "name": "Unpin a post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/posts/:post_id/unpin",
+            "params": [
+              {
+                "name": "post_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Unpin a post"
+        },
+        {
+          "info": {
+            "name": "Search posts in a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id/posts/search",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search posts in a team"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,219 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mattermost REST Channels API",
+    "version": "4"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Channels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all channels (sysadmin)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/channels"
+          },
+          "docs": "List all channels (sysadmin)"
+        },
+        {
+          "info": {
+            "name": "Create a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/channels",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a channel"
+        },
+        {
+          "info": {
+            "name": "Get a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a channel"
+        },
+        {
+          "info": {
+            "name": "Update a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a channel"
+        },
+        {
+          "info": {
+            "name": "Archive a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Archive a channel"
+        },
+        {
+          "info": {
+            "name": "Create a direct message channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/channels/direct",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a direct message channel"
+        },
+        {
+          "info": {
+            "name": "Create a group message channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/channels/group",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a group message channel"
+        },
+        {
+          "info": {
+            "name": "List channel members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id/members",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List channel members"
+        },
+        {
+          "info": {
+            "name": "Add a user to a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id/members",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a user to a channel"
+        },
+        {
+          "info": {
+            "name": "Remove a user from a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{your-mattermost-server}/api/v4/channels/:channel_id/members/:user_id",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a user from a channel"
+        },
+        {
+          "info": {
+            "name": "Get public channels for a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{your-mattermost-server}/api/v4/teams/:team_id/channels",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get public channels for a team"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
