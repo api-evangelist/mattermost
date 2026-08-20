@@ -23,6 +23,13 @@ tags:
 - Messaging
 - Collaboration
 - Team Chat
+- Open-Source
+- DevOps
+- Self-Hosted
+tags_raw:
+- Messaging
+- Collaboration
+- Team Chat
 - Open Source
 - DevOps
 - Self-Hosted
@@ -40,6 +47,14 @@ apis:
   humanURL: https://api.mattermost.com/
   baseURL: https://your-mattermost-server.com/api/v4
   tags:
+  - Messaging
+  - User
+  - Team
+  - Channels
+  - Posts
+  - Webhook
+  - Integration
+  tags_raw:
   - Messaging
   - Users
   - Teams
@@ -69,6 +84,12 @@ apis:
   humanURL: https://developers.mattermost.com/api-documentation
   baseURL: wss://your-mattermost-server.com/api/v4/websocket
   tags:
+  - WebSocket
+  - Event
+  - Real-Time
+  - Messaging
+  - AsyncAPI
+  tags_raw:
   - WebSocket
   - Events
   - Real-Time
@@ -108,6 +129,8 @@ apis:
   humanURL: https://api.mattermost.com/
   baseURL: https://your-mattermost-server.com/api/v4
   tags:
+  - Team
+  tags_raw:
   - Teams
   properties:
   - type: OpenAPI
@@ -118,6 +141,8 @@ apis:
   humanURL: https://api.mattermost.com/
   baseURL: https://your-mattermost-server.com/api/v4
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
