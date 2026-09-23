@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Mattermost REST Channels Posts API
+  title: Mattermost REST Posts API
   version: '4'
   description: 'Mattermost REST API v4 for managing users, teams, channels, posts, threads,
 
@@ -8,9 +8,7 @@ info:
 
     applications on a self-hosted or cloud Mattermost server. Authentication
 
-    uses Personal Access Tokens or session tokens carried as a Bearer token.
-
-    '
+    uses Personal Access Tokens or session tokens carried as a Bearer token.'
   contact:
     name: Mattermost API Documentation
     url: https://developers.mattermost.com/api-documentation
@@ -54,6 +52,8 @@ paths:
       responses:
         '200':
           description: Post list
+      operationId: getChannelsByChannelIdPosts
+      x-operation-id-source: derived
   /posts:
     post:
       tags:
@@ -72,6 +72,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
+      operationId: postPosts
+      x-operation-id-source: derived
   /posts/ephemeral:
     post:
       tags:
@@ -91,6 +93,8 @@ paths:
       responses:
         '201':
           description: Ephemeral post created
+      operationId: postPostsEphemeral
+      x-operation-id-source: derived
   /posts/{post_id}:
     parameters:
     - in: path
@@ -109,6 +113,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
+      operationId: getPostsByPostId
+      x-operation-id-source: derived
     put:
       tags:
       - Posts
@@ -122,6 +128,8 @@ paths:
       responses:
         '200':
           description: Updated post
+      operationId: putPostsByPostId
+      x-operation-id-source: derived
     delete:
       tags:
       - Posts
@@ -129,6 +137,8 @@ paths:
       responses:
         '200':
           description: Deleted
+      operationId: deletePostsByPostId
+      x-operation-id-source: derived
   /posts/{post_id}/patch:
     put:
       tags:
@@ -149,6 +159,8 @@ paths:
       responses:
         '200':
           description: Patched post
+      operationId: putPostsByPostIdPatch
+      x-operation-id-source: derived
   /posts/{post_id}/thread:
     get:
       tags:
@@ -163,6 +175,8 @@ paths:
       responses:
         '200':
           description: Thread
+      operationId: getPostsByPostIdThread
+      x-operation-id-source: derived
   /posts/{post_id}/pin:
     post:
       tags:
@@ -177,6 +191,8 @@ paths:
       responses:
         '200':
           description: Pinned
+      operationId: postPostsByPostIdPin
+      x-operation-id-source: derived
   /posts/{post_id}/unpin:
     post:
       tags:
@@ -191,6 +207,8 @@ paths:
       responses:
         '200':
           description: Unpinned
+      operationId: postPostsByPostIdUnpin
+      x-operation-id-source: derived
   /teams/{team_id}/posts/search:
     post:
       tags:
@@ -216,6 +234,8 @@ paths:
       responses:
         '200':
           description: Search results
+      operationId: postTeamsByTeamIdPostsSearch
+      x-operation-id-source: derived
 components:
   schemas:
     Post:

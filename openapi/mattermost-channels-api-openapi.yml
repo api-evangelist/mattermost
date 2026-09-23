@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Mattermost REST Channels API
   version: '4'
@@ -8,9 +8,7 @@ info:
 
     applications on a self-hosted or cloud Mattermost server. Authentication
 
-    uses Personal Access Tokens or session tokens carried as a Bearer token.
-
-    '
+    uses Personal Access Tokens or session tokens carried as a Bearer token.'
   contact:
     name: Mattermost API Documentation
     url: https://developers.mattermost.com/api-documentation
@@ -34,6 +32,8 @@ paths:
       responses:
         '200':
           description: Channels
+      operationId: getChannels
+      x-operation-id-source: derived
     post:
       tags:
       - Channels
@@ -47,6 +47,8 @@ paths:
       responses:
         '201':
           description: Channel created
+      operationId: postChannels
+      x-operation-id-source: derived
   /channels/{channel_id}:
     parameters:
     - in: path
@@ -65,6 +67,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Channel'
+      operationId: getChannelsByChannelId
+      x-operation-id-source: derived
     put:
       tags:
       - Channels
@@ -78,6 +82,8 @@ paths:
       responses:
         '200':
           description: Updated
+      operationId: putChannelsByChannelId
+      x-operation-id-source: derived
     delete:
       tags:
       - Channels
@@ -85,6 +91,8 @@ paths:
       responses:
         '200':
           description: Archived
+      operationId: deleteChannelsByChannelId
+      x-operation-id-source: derived
   /channels/direct:
     post:
       tags:
@@ -101,6 +109,8 @@ paths:
       responses:
         '201':
           description: DM channel
+      operationId: postChannelsDirect
+      x-operation-id-source: derived
   /channels/group:
     post:
       tags:
@@ -117,6 +127,8 @@ paths:
       responses:
         '201':
           description: Group channel
+      operationId: postChannelsGroup
+      x-operation-id-source: derived
   /channels/{channel_id}/members:
     parameters:
     - in: path
@@ -131,6 +143,8 @@ paths:
       responses:
         '200':
           description: Members
+      operationId: getChannelsByChannelIdMembers
+      x-operation-id-source: derived
     post:
       tags:
       - Channels
@@ -147,6 +161,8 @@ paths:
       responses:
         '201':
           description: Added
+      operationId: postChannelsByChannelIdMembers
+      x-operation-id-source: derived
   /channels/{channel_id}/members/{user_id}:
     delete:
       tags:
@@ -166,6 +182,8 @@ paths:
       responses:
         '200':
           description: Removed
+      operationId: deleteChannelsByChannelIdMembersByUserId
+      x-operation-id-source: derived
   /teams/{team_id}/channels:
     get:
       tags:
@@ -180,6 +198,8 @@ paths:
       responses:
         '200':
           description: Channels
+      operationId: getTeamsByTeamIdChannels
+      x-operation-id-source: derived
 components:
   schemas:
     Channel:

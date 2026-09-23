@@ -1,10 +1,7 @@
 {
   "provider": "mattermost",
   "sources": [
-    "mattermost-channels-api-openapi.yml",
-    "mattermost-posts-api-openapi.yml",
-    "mattermost-teams-api-openapi.yml",
-    "mattermost-users-api-openapi.yml"
+    "_original/mattermost-openapi.yml"
   ],
   "outputs": [
     "mattermost-channels-api-openapi.yml",
@@ -15,6 +12,19 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "mattermost-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "mattermost-openapi.yml: declared missing tag: Channels",
+    "mattermost-openapi.yml: declared missing tag: Posts",
+    "mattermost-openapi.yml: declared missing tag: Teams",
+    "mattermost-openapi.yml: declared missing tag: Users",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "mattermost-channels-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mattermost-posts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mattermost-teams-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mattermost-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
