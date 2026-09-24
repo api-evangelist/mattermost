@@ -36,9 +36,10 @@ tags:
 - Messaging
 - Collaboration
 - Team Chat
-- Open-Source
+- Open Source
 - DevOps
 - Self-Hosted
+- Real-Time
 tags_raw:
 - Messaging
 - Collaboration
@@ -46,6 +47,8 @@ tags_raw:
 - Open Source
 - DevOps
 - Self-Hosted
+- Open-Source
+- Real-Time
 url: https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/apis.yml
 created: '2026-05-11'
 modified: '2026-05-29'
@@ -84,8 +87,6 @@ apis:
     url: https://github.com/mattermost/mattermost-api-reference
   - type: Developer Guide
     url: https://developers.mattermost.com/contribute/more-info/server/rest-api/
-  - url: graphql/mattermost-graphql.md
-    type: GraphQL
 - aid: mattermost:websocket-api
   name: Mattermost WebSocket API
   description: >-
