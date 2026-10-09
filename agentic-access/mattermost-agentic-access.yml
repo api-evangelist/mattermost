@@ -1,294 +1,23 @@
-generated: '2026-07-15'
+generated: '2026-09-23'
 method: generated
-source: openapi/mattermost-openapi.yml
+source: openapi/mattermost-channels-api-openapi.yml, openapi/mattermost-posts-api-openapi.yml,
+  openapi/mattermost-teams-api-openapi.yml, openapi/mattermost-users-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
   operations: 43
   by_action_class:
-    acting: 29
-    connected: 14
+    connected: 17
+    acting: 26
   by_consequence:
-    write: 29
-    read: 14
+    read: 17
+    write: 26
   human_in_the_loop_required: 0
 operations:
-- path: /users/login
-  method: post
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /users/logout
-  method: post
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /users
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /users
-  method: post
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /users/{user_id}
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /users/{user_id}
-  method: put
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /users/{user_id}
-  method: delete
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /users/{user_id}/patch
-  method: put
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /users/search
-  method: post
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /users/autocomplete
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /users/{user_id}/sessions
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /teams
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /teams
-  method: post
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /teams/{team_id}
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /teams/{team_id}
-  method: put
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /teams/{team_id}
-  method: delete
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /teams/{team_id}/patch
-  method: put
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /teams/search
-  method: post
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /teams/{team_id}/members
-  method: get
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /teams/{team_id}/members
-  method: post
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /teams/{team_id}/members/{user_id}
-  method: delete
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
 - path: /channels
   method: get
+  operationId: getChannels
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -298,6 +27,7 @@ operations:
     audit: none
 - path: /channels
   method: post
+  operationId: postChannels
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -313,6 +43,7 @@ operations:
     audit: required
 - path: /channels/{channel_id}
   method: get
+  operationId: getChannelsByChannelId
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -322,6 +53,7 @@ operations:
     audit: none
 - path: /channels/{channel_id}
   method: put
+  operationId: putChannelsByChannelId
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -337,6 +69,7 @@ operations:
     audit: required
 - path: /channels/{channel_id}
   method: delete
+  operationId: deleteChannelsByChannelId
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -352,6 +85,7 @@ operations:
     audit: required
 - path: /channels/direct
   method: post
+  operationId: postChannelsDirect
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -367,6 +101,7 @@ operations:
     audit: required
 - path: /channels/group
   method: post
+  operationId: postChannelsGroup
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -382,6 +117,7 @@ operations:
     audit: required
 - path: /channels/{channel_id}/members
   method: get
+  operationId: getChannelsByChannelIdMembers
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -391,6 +127,7 @@ operations:
     audit: none
 - path: /channels/{channel_id}/members
   method: post
+  operationId: postChannelsByChannelIdMembers
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -406,6 +143,7 @@ operations:
     audit: required
 - path: /channels/{channel_id}/members/{user_id}
   method: delete
+  operationId: deleteChannelsByChannelIdMembersByUserId
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -421,6 +159,7 @@ operations:
     audit: required
 - path: /teams/{team_id}/channels
   method: get
+  operationId: getTeamsByTeamIdChannels
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -430,6 +169,7 @@ operations:
     audit: none
 - path: /channels/{channel_id}/posts
   method: get
+  operationId: getChannelsByChannelIdPosts
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -439,6 +179,7 @@ operations:
     audit: none
 - path: /posts
   method: post
+  operationId: postPosts
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -454,6 +195,7 @@ operations:
     audit: required
 - path: /posts/ephemeral
   method: post
+  operationId: postPostsEphemeral
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -469,6 +211,7 @@ operations:
     audit: required
 - path: /posts/{post_id}
   method: get
+  operationId: getPostsByPostId
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -478,6 +221,7 @@ operations:
     audit: none
 - path: /posts/{post_id}
   method: put
+  operationId: putPostsByPostId
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -493,6 +237,7 @@ operations:
     audit: required
 - path: /posts/{post_id}
   method: delete
+  operationId: deletePostsByPostId
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -508,6 +253,7 @@ operations:
     audit: required
 - path: /posts/{post_id}/patch
   method: put
+  operationId: putPostsByPostIdPatch
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -523,6 +269,7 @@ operations:
     audit: required
 - path: /posts/{post_id}/thread
   method: get
+  operationId: getPostsByPostIdThread
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -532,6 +279,7 @@ operations:
     audit: none
 - path: /posts/{post_id}/pin
   method: post
+  operationId: postPostsByPostIdPin
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -547,6 +295,7 @@ operations:
     audit: required
 - path: /posts/{post_id}/unpin
   method: post
+  operationId: postPostsByPostIdUnpin
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -562,6 +311,27 @@ operations:
     audit: required
 - path: /teams/{team_id}/posts/search
   method: post
+  operationId: postTeamsByTeamIdPostsSearch
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /teams
+  method: get
+  operationId: getTeams
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /teams
+  method: post
+  operationId: postTeams
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -575,3 +345,259 @@ operations:
       - abnormal
       - high-value
     audit: required
+- path: /teams/{team_id}
+  method: get
+  operationId: getTeamsByTeamId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /teams/{team_id}
+  method: put
+  operationId: putTeamsByTeamId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /teams/{team_id}
+  method: delete
+  operationId: deleteTeamsByTeamId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /teams/{team_id}/patch
+  method: put
+  operationId: putTeamsByTeamIdPatch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /teams/search
+  method: post
+  operationId: postTeamsSearch
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /teams/{team_id}/members
+  method: get
+  operationId: getTeamsByTeamIdMembers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /teams/{team_id}/members
+  method: post
+  operationId: postTeamsByTeamIdMembers
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /teams/{team_id}/members/{user_id}
+  method: delete
+  operationId: deleteTeamsByTeamIdMembersByUserId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /users/login
+  method: post
+  operationId: postUsersLogin
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /users/logout
+  method: post
+  operationId: postUsersLogout
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /users
+  method: get
+  operationId: getUsers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /users
+  method: post
+  operationId: postUsers
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /users/{user_id}
+  method: get
+  operationId: getUsersByUserId
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /users/{user_id}
+  method: put
+  operationId: putUsersByUserId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /users/{user_id}
+  method: delete
+  operationId: deleteUsersByUserId
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /users/{user_id}/patch
+  method: put
+  operationId: putUsersByUserIdPatch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /users/search
+  method: post
+  operationId: postUsersSearch
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /users/autocomplete
+  method: get
+  operationId: getUsersAutocomplete
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /users/{user_id}/sessions
+  method: get
+  operationId: getUsersByUserIdSessions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
