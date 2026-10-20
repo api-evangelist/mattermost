@@ -3,7 +3,9 @@ method: searched
 checked:
 - https://azuremarketplace.microsoft.com/
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
 - https://github.com/n8n-io/n8n/tree/860f1273ebd73fabbd668cbec2c49ed9b48a286d/packages/nodes-base/nodes/
+- https://github.com/n8n-io/n8n/tree/f73dc337f8dc61a4fd44aebe41c55faafe4f53a4/packages/nodes-base/nodes/
 - https://hightouch.com/docs/destinations/mattermost
 - https://zapier.com/api/v4/apps/
 - microsoft-teams/integrations/microsoft-teams-integration-edges.yml
@@ -25,6 +27,25 @@ edges:
   seller_name: Mattermost
   detected_by: sweep-cloud-marketplaces.py
   detected: '2026-10-13'
+- partner_name: Microsoft Teams (own)
+  partner: microsoft-teams
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://appsource.microsoft.com/en-us/product/office/WA200007706
+  mirror_of: microsoft-teams/integrations/microsoft-teams-integration-edges.yml
+  apps:
+  - Mattermost Playbooks
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: Microsoft Teams app
+  publisher_verified:
+  - Microsoft 365 Certified
 - partner_name: Hightouch
   partner: hightouch
   partner_match: aggregator
@@ -76,7 +97,7 @@ edges:
   channel: open-source-node
   relationship: ipaas-bridge
   direction: third-party
-  evidence: https://github.com/n8n-io/n8n/tree/860f1273ebd73fabbd668cbec2c49ed9b48a286d/packages/nodes-base/nodes/Mattermost
+  evidence: https://github.com/n8n-io/n8n/tree/f73dc337f8dc61a4fd44aebe41c55faafe4f53a4/packages/nodes-base/nodes/Mattermost
   category: null
   contract_reference:
     register: n8n built-in nodes (n8n-io/n8n packages/nodes-base)
@@ -101,7 +122,7 @@ edges:
   channel: open-source-node
   relationship: ipaas-bridge
   direction: third-party
-  evidence: https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/mattermost
+  evidence: https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/mattermost
   category: null
   contract_reference:
     register: Pipedream components (PipedreamHQ/pipedream components/)
@@ -119,23 +140,4 @@ edges:
     builder: Pipedream repo (component)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
-- partner_name: Microsoft Teams (own)
-  partner: microsoft-teams
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://appsource.microsoft.com/en-us/product/office/WA200007706
-  mirror_of: microsoft-teams/integrations/microsoft-teams-integration-edges.yml
-  apps:
-  - Mattermost Playbooks
-  listing_count: 1
-  detected: '2026-10-18'
-  detected_by: mirror-platform-listings.py
-  category: Microsoft Teams app
-  publisher_verified:
-  - Microsoft 365 Certified
 source: https://hightouch.com/docs/destinations/mattermost

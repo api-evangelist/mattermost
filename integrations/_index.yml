@@ -15,6 +15,19 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
+- slug: mattermost-microsoft-teams-own
+  label: Microsoft Teams (own)
+  partner: microsoft-teams
+  partner_name: Microsoft Teams (own)
+  category: Microsoft Teams app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://appsource.microsoft.com/en-us/product/office/WA200007706
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
 - slug: mattermost-hightouch
   label: Hightouch
   partner: hightouch
@@ -59,7 +72,7 @@
   type: marketplace
   marketplace: n8n-nodes-base
   channel: open-source-node
-  evidence: https://github.com/n8n-io/n8n/tree/860f1273ebd73fabbd668cbec2c49ed9b48a286d/packages/nodes-base/nodes/Mattermost
+  evidence: https://github.com/n8n-io/n8n/tree/f73dc337f8dc61a4fd44aebe41c55faafe4f53a4/packages/nodes-base/nodes/Mattermost
   source: edge
   relationship: ipaas-bridge
   contract_reference:
@@ -84,7 +97,7 @@
   type: marketplace
   marketplace: pipedream-components
   channel: open-source-node
-  evidence: https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/mattermost
+  evidence: https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/mattermost
   source: edge
   relationship: ipaas-bridge
   contract_reference:
@@ -101,18 +114,5 @@
     actions: true
     sources: true
     builder: Pipedream repo (component)
-  status: not-a-workflow
-  arazzo: null
-- slug: mattermost-microsoft-teams-own
-  label: Microsoft Teams (own)
-  partner: microsoft-teams
-  partner_name: Microsoft Teams (own)
-  category: Microsoft Teams app
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://appsource.microsoft.com/en-us/product/office/WA200007706
-  source: edge
-  relationship: platform-app
   status: not-a-workflow
   arazzo: null
