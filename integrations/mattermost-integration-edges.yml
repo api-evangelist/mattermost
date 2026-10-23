@@ -28,6 +28,14 @@ checked:
 - https://catalog.redhat.com/api/containers/v1/vendors/label/
 - https://catalog.redhat.com/software/partners
 - artifact-hub/integrations/artifact-hub-integration-edges.yml
+- https://matrix.org/ecosystem/
+- https://matrix.org/ecosystem/bridges/
+- https://matrix.org/ecosystem/clients/
+- https://matrix.org/ecosystem/distributions/
+- https://matrix.org/ecosystem/hosting/
+- https://matrix.org/ecosystem/integrations/
+- https://matrix.org/ecosystem/sdks/
+- https://matrix.org/ecosystem/servers/
 marketplace_apps: []
 edges:
 - partner_name: Microsoft Azure Marketplace
@@ -317,4 +325,43 @@ edges:
   category: Artifact Hub listing (Helm chart)
   badges:
   - 'Verified publisher (Artifact Hub verified publisher: repository ownership proven)'
+- partner_name: Matrix.org ecosystem directory
+  partner: matrix
+  partner_match: register-name
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://matrix.org/ecosystem/bridges/mattermost/#matrix-as-mm
+  category: Matrix protocol ecosystem
+  contract_reference:
+    register: Matrix.org Foundation ecosystem directory (matrix.org/ecosystem)
+    standard: Matrix
+    spec_file: null
+    role: matrix-bridge
+    roles:
+    - matrix-bridge
+    registered_name: Mattermost / Jan Ostgren
+    register_id: https://matrix.org/ecosystem/bridges/mattermost/#matrix-as-mm
+    matched_domain: null
+    matched_by: register-name
+    match_note: register-name 'mattermost' = mattermost; wikidata P856 mattermost.com agrees or unheld
+    listings:
+    - maturity: Beta
+      name: matrix-as-mm
+      network: Mattermost
+      obsolete: false
+      page: https://matrix.org/ecosystem/bridges/mattermost/#matrix-as-mm
+      section: bridges
+    all_obsolete: false
+    signal_note: 'participation only: a listing in the Foundation''s directory (it endorses nothing, certifies nothing).
+      Roles are context; listings are never counted'
+    detected_by: sweep-matrix-ecosystem.py
+    detected: '2026-10-23'
+    register_name_note: register-name 'mattermost' = mattermost; wikidata P856 mattermost.com agrees or unheld
+    identity_source: register-name
+    identity_note: register gave only the name; exact normalised match to the repo's apis.yml name, one repo, Wikidata
+      P856 not contradicting (Kin 2026-10-20 decision 2)
+  detected_by: sweep-matrix-ecosystem.py
+  first_seen: '2026-10-23'
 source: https://hightouch.com/docs/destinations/mattermost
