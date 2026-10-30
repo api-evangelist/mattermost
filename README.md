@@ -1,4 +1,4 @@
-# Mattermost (mattermost)
+# Mattermost
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,89 +66,139 @@
 
 Mattermost is an open-source collaboration platform for technical teams that combines secure team messaging, workflow automation, voice/video calling, and integrations as a self-hosted Slack alternative. The Mattermost REST API exposes full programmatic control over users, teams, channels, posts, files, integrations, plugins, and webhooks.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/apis.yml)
+**Areas:** Messaging · Collaboration · Team Chat · Open Source · DevOps · Self-Hosted · Real-Time
 
-## Scope
+## Mattermost on APIs.io
 
-- **Type:** Index
+Everything profiled for Mattermost is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/mattermost/](https://apis.io/providers/mattermost/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (6)
 
-- Messaging
-- Collaboration
-- Team Chat
-- Open Source
-- DevOps
-- Self-Hosted
+- [Mattermost REST API](https://apis.io/apis/mattermost/rest-api/) — REST API v4 for managing users, teams, channels, posts, threads, files, integrations, plugins, webhooks, slash commands, and OAuth applications.…
+- [Mattermost WebSocket API](https://apis.io/apis/mattermost/websocket-api/) — Real-time WebSocket event stream for Mattermost v4. Clients connect to /api/v4/websocket, authenticate via cookie, Authorization header, or an…
+- [Mattermost Channels API](https://apis.io/apis/mattermost/mattermost-channels-api/) — The Channels API from Mattermost — 7 operation(s) for channels.
+- [Mattermost Posts API](https://apis.io/apis/mattermost/mattermost-posts-api/) — The Posts API from Mattermost — 9 operation(s) for posts.
+- [Mattermost Teams API](https://apis.io/apis/mattermost/mattermost-teams-api/) — The Teams API from Mattermost — 6 operation(s) for teams.
+- [Mattermost Users API](https://apis.io/apis/mattermost/mattermost-users-api/) — The Users API from Mattermost — 8 operation(s) for users.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-11
-- **Modified:** 2026-05-29
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Mattermost REST API
+Event-driven and webhook contracts.
 
-REST API v4 for managing users, teams, channels, posts, threads, files, integrations, plugins, webhooks, slash commands, and OAuth applications. Authentication uses Personal Access Tokens or session tokens via Bearer authentication.
+- [Mattermost WebSocket API](https://apis.io/asyncapis/mattermost/mattermost-asyncapi/)
 
-- **Human URL:** [https://api.mattermost.com/](https://api.mattermost.com/)
-- **Base URL:** `https://your-mattermost-server.com/api/v4`
+#### Event channels (1)
 
-#### Tags
+Individual events and webhooks the provider emits.
 
-- Messaging
-- Users
-- Teams
-- Channels
-- Posts
-- Webhooks
-- Integrations
+- [/api/v4/websocket](https://apis.io/channels/mattermost/api-v4-websocket/)
 
-#### Properties
+#### GraphQL (1)
 
-- [Documentation](https://api.mattermost.com/)
-- [API Reference](https://developers.mattermost.com/integrate/reference/rest-api/)
-- [Open A P I  Source](https://github.com/mattermost/mattermost-api-reference)
-- [Developer  Guide](https://developers.mattermost.com/contribute/more-info/server/rest-api/)
-- [Postman Collection](collections/mattermost.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mattermost.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+GraphQL schemas.
 
-### Mattermost WebSocket API
+- [Moved to /providers/mattermost/](https://apis.io/graphqls/mattermost/mattermost-graphql/)
 
-Real-time WebSocket event stream for Mattermost v4. Clients connect to /api/v4/websocket, authenticate via cookie, Authorization header, or an authentication_challenge action, and receive event envelopes (event, data, broadcast, seq) covering posts, channels, users, teams, reactions, typing, status, threads, plugins, and more. Client actions user_typing, get_statuses, and get_statuses_by_ids are supported over the same socket.
+#### MCP servers (1)
 
-- **Human URL:** [https://developers.mattermost.com/api-documentation](https://developers.mattermost.com/api-documentation)
-- **Base URL:** `wss://your-mattermost-server.com/api/v4/websocket`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [MCP Server](https://apis.io/servers/mattermost/mcp-server/)
 
-- WebSocket
-- Events
-- Real-Time
-- Messaging
-- AsyncAPI
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Documentation](https://developers.mattermost.com/api-documentation)
-- [AsyncAPI](https://raw.githubusercontent.com/api-evangelist/mattermost/refs/heads/main/asyncapi/mattermost-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [API Reference](https://developers.mattermost.com/integrate/reference/rest-api/)
-- [Postman Collection](collections/mattermost.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/mattermost.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Mattermost Agentic Access](https://apis.io/agentic-access/mattermost/mattermost-agentic-access/)
 
-## Common Properties
+#### Collections (5)
 
-- [LinkedIn](https://www.linkedin.com/company/mattermost)
+Postman and Open Collection request collections.
+
+- [Mattermost REST API](https://apis.io/collections/mattermost/open-mattermost/)
+- [Mattermost REST Channels API](https://apis.io/collections/mattermost/open-mattermost-channels-api/)
+- [Mattermost REST Channels Posts API](https://apis.io/collections/mattermost/open-mattermost-posts-api/)
+- [Mattermost REST Channels Teams API](https://apis.io/collections/mattermost/open-mattermost-teams-api/)
+- [Mattermost REST Channels Users API](https://apis.io/collections/mattermost/open-mattermost-users-api/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Mattermost — asyncapi rules](https://apis.io/rules/mattermost/mattermost-asyncapi-spectral-rules/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Mattermost Authentication](https://apis.io/security/mattermost/mattermost-authentication/)
+- [Mattermost Domain Security](https://apis.io/security/mattermost/mattermost-domain-security/)
+- [Mattermost Trust Center](https://apis.io/security/mattermost/mattermost-trust-center/)
+- [Mattermost Vulnerability Disclosure](https://apis.io/security/mattermost/mattermost-vulnerability-disclosure/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://mattermost.com)
 - [Documentation](https://docs.mattermost.com)
-- [Developer  Portal](https://developers.mattermost.com/)
-- [GitHub Organization](https://github.com/mattermost)
-- [Sign Up](https://mattermost.com/sign-up/)
 - [Pricing](https://mattermost.com/pricing/)
-- [M C P Server](https://github.com/mattermost/mmctl-mcp)
+- [Blog](https://mattermost.com/blog/feed/)
+- [GitHub](https://github.com/mattermost)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 35.9** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 65.0 |
+| Contract quality | 51.3 |
+| Contract governance | 11.4 |
+| Operational transparency | 2.6 |
+| Developer ergonomics | 40.5 |
+| Access clarity | 31.6 |
+
+**Agent readiness 21.5** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 22.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/mattermost/](https://apis.io/providers/mattermost/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Mattermost: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/mattermost/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
